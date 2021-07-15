@@ -1,0 +1,469 @@
+
+0;136;0c<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <meta charset="utf8" />
+    <link rel="icon" type="image/png" href="/static/images/pc.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <link rel="stylesheet" href="https://unpkg.com/js-datepicker@4.0.5/dist/datepicker.min.css"/>    
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/js-datepicker@4.0.5/dist/datepicker.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>    
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style type="text/css">
+      
+      
+    </style>
+    
+    <script>
+    </script>    
+  </head>
+  <body onload="onLoad();">
+    
+    
+    <div data-role="page">
+      <div data-role="header"> 
+        <a href="http://192.168.1.9:8888" data-icon="camera" class="ui-btn-left">Chronograf</a>
+	<h1>{{title}}</h1>
+        <a onclick="debugToggle()" data-icon="info" class="ui-btn-right">Debug</a>
+      </div> 
+      
+      <div role="main" class="ui-content">
+
+	<script  type="text/javascript">
+
+	  
+	  var msgCount = 0;
+	  var debug = false;
+	  // Connect to the Socket.IO server.
+          // The connection URL has the following format, relative to the current page:
+          //     http[s]://<domain>:<port>[/<namespace>]
+          var socket = io();
+
+	  /**
+	   * Returns a random integer between min (inclusive) and max (inclusive).
+	   * The value is no lower than min (or the next integer greater than min
+	   * if min isn't an integer) and no greater than max (or the next integer
+	   * lower than max if max isn't an integer).
+	   * Using Math.round() will give you a non-uniform distribution!
+	   */
+	  function getRandomInt(min, max) {
+	      min = Math.ceil(min);
+	      max = Math.floor(max);
+	      return Math.floor(Math.random() * (max - min + 1)) + min;
+	  }
+	  function log(msg) {
+	      if(debug) {
+		  var today = new Date();
+		  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		  var log = document.getElementById('log');
+		  log.innerHTML += time + " " + msg + "<br>";
+	      }
+	  }
+          // Event handler for new connections.
+          // The callback function is invoked when a connection with the
+          // server is established.
+          socket.on('connect', function() {
+              socket.emit('my_event', {data: 'I\'m connected!'});
+          });
+	  
+          // Event handler for server sent data.
+          // The callback function is invoked whenever the server emits data
+          // to the client. The data is then displayed in the "Received"
+          // section of the page.
+          socket.on('my_response', function(msg, cb) {
+
+	      //console.log('Received #' + msg.count + ': ' + msg.data);
+		    //if (cb)
+			//cb();
+          });
+	  
+          // Event handler for server sent data.
+          // The callback function is invoked whenever the server emits data
+          // to the client. The data is then displayed in the "Received"
+          // section of the page.
+          socket.on('mqtt_msg', function(msg, cb) {
+	      
+	      log('Received #' + msg.topic + " " + msg.payload);
+	      try {
+		  var topic = "" + msg.topic;
+		  var payload = msg.payload;
+
+		  msgCount++;
+		  
+		  document.getElementById("msg_span").innerHTML = "" + msgCount;		  
+
+		  
+		  if(topic in sensor_dict) {
+		      if(payload.indexOf(":") != -1) {
+			  if(payload.indexOf("}") != -1) {
+			      var val =  payload.substring(payload.indexOf(":")+1, payload.indexOf("}"));
+			      sensor_dict[topic].last = parseFloat(val);
+
+			      if(sensor_dict[topic].last < sensor_dict[topic].min) {
+				  sensor_dict[topic].min = sensor_dict[topic].last;
+			      }
+			      if(sensor_dict[topic].last > sensor_dict[topic].max) {
+				  sensor_dict[topic].max = sensor_dict[topic].last;
+			      }
+			      
+			      refresh_value(topic);
+			  }
+		      }
+
+		  }
+		  else if(topic in device_dict) {
+		      
+		      if(payload.indexOf(":") != -1) {
+			  if(payload.indexOf(",") != -1) {
+
+			      var val =  payload.substring(payload.indexOf(":")+1, payload.indexOf(","));
+
+			      // Don't update during acknowledge period
+			      if(device_dict[topic].update) {
+
+				  log("Updating slider: " + topic);
+
+				  device_dict[topic].state = parseInt(val);
+				  $("#" + device_dict[topic].name).val(device_dict[topic].state).slider("refresh");
+				  //$("input[id=" + device_dict[topic].name + "]").val(device_dict[topic].state).slider("refresh");				  
+				  //document.getElementById(device_dict[topic].name).value = device_dict[topic].state;		  
+			      }			      
+			  }
+		      }
+
+		  }
+		  else if(topic.indexOf("out/ack") != -1) {
+		      log("Ack received " + payload);
+		      if(payload.indexOf(":") != -1) {
+			  if(payload.indexOf("}") != -1) {
+			      var val =  payload.substring(payload.indexOf(":")+1, payload.indexOf("}"));
+			      var seq = parseInt(val);
+
+			      if(seq == device_dict['seq_no']) {
+				  clearTimeout(device_dict['ack_timer']);
+				  // lets allow updates again
+				  device_dict['update'] = true;
+				  $.mobile.loading( "hide" );
+			      }
+			  }
+		      }
+		  }
+		  
+	      } catch (error) {
+		  console.error(error);
+		  log(error);
+	      }
+          });
+
+	  function ackNotReceived() {
+	      $.mobile.loading( "hide" );
+	      log("The ack with id " + seqNo + " was not received after 3sec");
+	      alert("The ack with id " + seqNo + " was not received after 3sec");
+
+	      // lets allow updates again
+	      device_dict['update'] = true;
+	      device_dict['seq_no'] = 0;	
+	      device_dict['ack_timer'] = 0;
+      
+	  }
+	  
+	  function getSeqNo(topic) {
+
+	      
+	      seqNo = getRandomInt(2, 9999);
+	      
+	      device_dict['ack_timer'] = setTimeout(function() { ackNotReceived(topic); }, 3000);
+	      device_dict['update'] = false;
+	      device_dict['seq_no'] = seqNo;
+
+	      return seqNo;
+	  }
+	  
+	  
+	  function onLoad() {
+	      getFromDB();
+	  }
+
+	  var sensor_dict = {};
+	  sensor_dict['pc/atlas_hydro/out/ec'] = {last:0,min:0,max:0,unit:"µS/cm",name:"ec"};
+	  sensor_dict['pc/atlas_hydro/out/ph'] = {last:0,min:0,max:0,unit:"",name:"ph"};
+	  sensor_dict['pc/atlas_hydro/out/temp'] = {last:0,min:0,max:0,unit:"°C",name:"temp"};
+	  sensor_dict['pc/water_control/out/flow'] = {last:0,min:0,max:0,unit:"lit",name:"flow"};
+	  sensor_dict['pc/water_control/out/level'] = {last:0,min:0,max:0,unit:"mm",name:"level"};
+
+	  var device_dict = {};
+	  device_dict['pc/water_control/out/sprinkler1'] = {state:0,seq_no:0,update:true,name:"flip-sprinkler1",ack_timer:0};
+	  device_dict['pc/water_control/out/water'] = {state:0,seq_no:0,update:true,name:"flip-pond-water",ack_timer:0};
+	  device_dict['pc/water_control/out/auto_level'] = {state:0,seq_no:0,update:true,name:"flip-auto-level",ack_timer:0};
+	  
+	  function refresh_value(topic) {
+
+	      if(topic in sensor_dict) {
+	      //console.log(sensor_dict[topic]);
+	      document.getElementById(sensor_dict[topic].name + "_span").innerHTML = sensor_dict[topic].last + sensor_dict[topic].unit;		  
+		  //document.getElementById(sensor_dict[topic].name + "_small_span").innerHTML = " (" + sensor_dict[topic].min + "/" + sensor_dict[topic].max + ")";
+		  document.getElementById(sensor_dict[topic].name + "_small_span").innerHTML = "(" + sensor_dict[topic].min + sensor_dict[topic].unit + " < " + sensor_dict[topic].max + sensor_dict[topic].unit + ")";		  
+	      }
+	  }
+
+	  
+	  $("#flip-auto-level").change(function() {
+	      var slider_value = $("#flip-auto-level").val();
+	      log("auto-level" + slider_value);
+	  });
+	  $("#flip-pond-water").change(function() {
+	      var slider_value = $("#flip-pond-water").val();
+	      log("pond-water" + slider_value);
+	  });
+	  $("#flip-sprinkler1").change(function() {
+	      var slider_value = $("#flip-sprinkler1").val();
+	      log("sprinkler1" + slider_value);
+	  });
+	  
+	  
+	  function waterOnOff(select) {
+	      
+	      log("waterOnOff: " + select.value);
+
+	      var dict = {"value":select.value};
+	      
+	      $.ajax({
+		  type: "POST", 
+		  url: "/api_water_json",  
+		  data : JSON.stringify(dict),
+		  contentType: "application/json",
+		  timeout: 3000,
+		  error: function(XMLHttpRequest, textStatus, errorThrown) {
+		      alert("Failed to set water on/off!");
+		  },
+		  success: function(msg){ 
+		      
+		  }
+	      });
+
+	    	      
+	  }
+
+	  function sprinkler1(select) {
+	      slider_change('pc/water_control/out/sprinkler1',select);
+	  }
+	  function water(select) {
+	      slider_change('pc/water_control/out/water',select);
+	  }
+	  function autolevel(select) {
+	      slider_change('pc/water_control/out/auto_level',select);
+	  }
+	  
+	  function slider_change(topic, select) {
+
+	      log("slider_change: " + select.value);
+
+	      var $this = $( this ),
+		  theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+              html = $this.jqmData( "html" ) || "";
+	      $.mobile.loading( "show", {
+		  text: "Waiting for Ack!",
+		  textVisible: true,
+		  theme: theme,
+		  textonly: false,
+		  html: html
+	      });
+
+	      device_dict['seq_no'] = getSeqNo(topic);
+
+	      in_topic = topic.replace("/out/", "/in/");
+	      
+	      var dict = {"value":select.value,"topic":in_topic,"seq_no":device_dict['seq_no']};
+	      
+	      $.ajax({
+		  type: "POST", 
+		  url: "/api_device_control_json",  
+		  data : JSON.stringify(dict),
+		  contentType: "application/json",
+		  timeout: 3000,
+		  error: function(XMLHttpRequest, textStatus, errorThrown) {
+		      alert("Failed to set water on/off!");
+		  },
+		  success: function(msg){ 
+		      
+		  }
+	      });
+
+	    	      
+	  }
+
+	  function feed() {
+	      
+	      var dict = {"value":3};
+	      
+	      $.ajax({
+		  type: "POST", 
+		  url: "/api_feed_json",  
+		  data : JSON.stringify(dict),
+		  contentType: "application/json",
+		  timeout: 3000,
+		  error: function(XMLHttpRequest, textStatus, errorThrown) {
+		      alert("Failed to feed!");
+		  },
+		  success: function(msg){ 
+		      
+		  }
+	      });	      
+	  }
+
+
+	  function debugToggle() {
+	      if(debug) {
+		  debug = false;
+		  var log = document.getElementById('log');
+		  log.innerHTML = "";
+		  
+	      } else {
+		  debug = true;
+	      }
+	  }
+
+	  
+
+	  
+	  function getFromDB() {
+	      
+	      $.getJSON("api_get_last_values_json",  function(json) {
+		  
+		  if(json.length > 0) {
+		      
+		      
+		      for(var i = 0; i < json.length; i++) {
+			  var obj = json[i];
+			  
+			  if(obj != null) {
+			      //console.log(obj);
+			      if(obj.topic in sensor_dict) {
+				  sensor_dict[obj.topic].min = obj.min;
+				  sensor_dict[obj.topic].max = obj.max;
+				  refresh_value(obj.topic);
+			      }
+			  }
+		      }		  
+		  }
+		  
+	      });
+	      
+	  }
+
+	</script>	
+	
+	Temp:   <span id="temp_span" style="font-size: 3vh; font-weight: bold;">-0.1</span><span id="temp_small_span" style="font-size: 2vh; font-weight: plain; float:right">-0.1</span>
+	<p id="temp p"></p>
+	PH :    <span id="ph_span" style="font-size: 3vh; font-weight: bold;"></span><span id="ph_small_span" style="font-size: 2vh; font-weight: plain; float:right"></span>
+	<p id="ph p"></p>
+	EC :    <span id="ec_span" style="font-size: 3vh; font-weight: bold;"></span><span id="ec_small_span" style="font-size: 2vh; font-weight: plain; float:right"></span>
+	<p id="ec p"></p>
+	Level : <span id="level_span" style="font-size: 3vh; font-weight: bold;">163.1</span><span id="level_small_span" style="font-size: 2vh; font-weight: plain; float:right">163.1</span>
+	<p id="level p"></p>
+	Flow :  <span id="flow_span" style="font-size: 3vh; font-weight: bold;">2824.5</span><span id="flow_small_span" style="font-size: 2vh; font-weight: plain; float:right">2824.5</span>
+
+
+	<hr size="1" class="wfid_temp631909 hr">
+
+	<button onclick="feed()">Feed</button>
+
+
+	<div class="slidecontainer">
+	  <label for="flip-auto-level">Automatic waterlevel:</label>
+	  <select class="slider" name="flip-auto-level" id="flip-auto-level" onchange="autolevel(this);" data-role="slider" data-mini="true">
+	    <option value="0">Off</option>
+	    <option value="1">On</option>
+	  </select>
+
+	</div>
+	
+	<div class="slidecontainer">
+	  <label for="flip-pond-water">Pond water:</label>
+	  <select class="slider" name="flip-pond-water" id="flip-pond-water" onchange="water(this);" data-role="slider" data-mini="true">
+	    <option value="0">Off</option>
+	    <option value="1">On</option>
+	  </select>
+	</div>
+
+	<hr size="1" class="wfid_temp631909 hr">
+
+	<div class="slidecontainer">
+	  <label for="flip-sprinkler1">Sprinkler:</label>
+	  <select class="slider" name="flip-sprinkler1" onchange="sprinkler1(this);" id="flip-sprinkler1" data-role="slider" data-mini="true">
+	    
+	    <option value="0">Off</option>
+	    <option value="1">On</option>
+	  </select>
+	</div>
+
+	<hr size="1" class="wfid_temp631909 hr">
+
+	Incoming messages:   <span id="msg_span" style="font-size: 2vh; font-weight: bold;">0</span>
+	<button onclick="window.location.href='/timers'" data-icon="clock">Timers</button>
+	<div id="log">
+	
+      </div>
+      
+      <div data-role="footer"> 
+        <h4>
+          &copy; 2021 - Anders Boan Johansson
+        </h4> 
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+
+      $(document).on("pageshow",'.ui-page',function(){
+
+	  updateTheme('b');
+      });
+function updateTheme(newTheme) {
+    var rmbtnClasses = '';
+    var rmhfClasses = '';
+    var rmbdClassess = '';
+    var arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's']; // I had themes from a to s
+
+    $.each(arr, function(index, value) {
+        rmbtnClasses = rmbtnClasses + ' ui-btn-up-' + value + ' ui-btn-hover-' + value;
+        rmhfClasses = rmhfClasses + ' ui-bar-' + value;
+        rmbdClassess = rmbdClassess + ' ui-body-' + value + ' ui-page-theme-'+ value;
+    });
+
+    // reset all the buttons widgets
+    $.mobile.activePage.find('.ui-btn').not('.ui-li-divider').removeClass(rmbtnClasses).addClass('ui-btn-up-' + newTheme).attr('data-theme', newTheme);
+
+    // reset the header/footer widgets
+    $.mobile.activePage.find('.ui-header, .ui-footer').removeClass(rmhfClasses).addClass('ui-bar-' + newTheme).attr('data-theme', newTheme);
+
+    // reset the page widget
+    $.mobile.activePage.removeClass(rmbdClassess).addClass('ui-body-' + newTheme + ' ui-page-theme-'+ newTheme).attr('data-theme', newTheme);
+
+    // target the list divider elements, then iterate through them and
+    // change its theme (this is the jQuery Mobile default for
+    // list-dividers)
+    $.mobile.activePage.find('.ui-li-divider').each(function(index, obj) {
+        $(this).removeClass(rmhfClasses).addClass('ui-bar-' + newTheme).attr('data-theme', newTheme);
+    });
+};
+      
+    </script>
+    
+  </body>
+  
+  
+</html>

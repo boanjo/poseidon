@@ -1,0 +1,4 @@
+Flask
+influxdb
+flask-mqtt
+flask-socketio

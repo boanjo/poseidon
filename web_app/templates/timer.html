@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <meta charset="utf8" />
+    <link rel="icon" type="image/png" href="/static/images/pc.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">    
+    <style type="text/css">
+
+      
+    </style>
+
+
+
+    
+    
+  </head>
+  <body>
+    
+    
+    <div data-role="page">
+      <div data-role="header"> 
+        <h1>{{title}}</h1> 
+      </div> 
+      
+      <div role="main" class="ui-content">
+
+	<ul data-role="listview" data-inset="true">
+	  <li class="ui-field-contain">
+	    <label for="select-timer-type" class="select">Timer type:</label>
+	    <select name="select-timer-type" id="select-timer-type"  onchange="timerType(this)">
+	      <option value="daily">Daily</option>
+	      <option value="one_off">One Off</option>
+	    </select>
+	  </li>
+	  <li class="ui-field-contain">
+	    <label id=time_label for="time-field">Time:</label>
+	    <input type="time" step="2" name="time-field" id="time-field" value=09:00:00 data-clear-btn="true">
+	  </li>
+	  <li class="ui-field-contain">
+	    <label for="select-choice-device" class="select">Choose device:</label>
+	    <select name="select-choice-device" id="select-choice-device"  onchange="deviceType(this)">
+	      <option value="feed">Fish Feed</option>
+	      <option value="sprinkler">Sprinkler</option>
+	      <option value="water">Pond Water</option>
+	      <option value="auto_level">Auto Level</option>
+	    </select>
+	  </li>
+	  <li class="ui-field-contain" id="on_off_block">
+	    <label id="label_action" for="action">Action:</label>
+	    <select name="action" id="action" data-role="slider">
+	      <option value="off">Off</option>
+	      <option value="on">On</option>
+	    </select>
+	  </li>
+	  <li class="ui-field-contain" id="feed_block">
+	    <label id="slider2_label" for="slider-feed">Feed amount (ml):</label>
+	    <input type="range" name="slider-feed" id="slider-feed" value="3" min="0" max="10" data-highlight="true">
+	  </li>
+
+	  <li class="ui-body ui-body-b">
+
+	    <div class="ui-block-a"><button id="delete" onclick="deleteFunc()" class="ui-btn ui-corner-all ui-btn-a">Delete</button></div>
+	    <div class="ui-block-b"><button id="cancel" onclick="cancelFunc()" class="ui-btn ui-corner-all ui-btn-a">Cancel</button></div>
+	    <div class="ui-block-c"><button id="ssubmit" onclick="submitFunc()" class="ui-btn ui-corner-all ui-btn-a">Submit</button></div>
+	  </li>
+	</ul>
+        
+      </div>
+      <div data-role="footer"> 
+        <h4>
+          &copy; 2021 - Anders Boan Johansson
+        </h4> 
+      </div>
+    </div>
+
+
+    <script>
+
+      var last_timeout = 0;
+
+      /*
+       window.onload = function() {
+       console.log("onload");
+       document.getElementById('on_off_block').style.visibility = "hidden"; 
+       document.getElementById('feed_block').style.visibility = "visible";  
+       }
+      */
+
+      // initiate
+      /*
+       document.getElementById('select-choice-1').value = {{ type }};
+       timerType(document.getElementById('select-choice-1'));
+       document.getElementById('select-choice-device').value = {{ topic }};
+       deviceType(document.getElementById('select-choice-device'));
+      */
+
+
+      console.log("calling javascript for body");
+
+      document.getElementById('on_off_block').style.visibility = "hidden"; 
+      document.getElementById('feed_block').style.visibility = "visible";  
+
+      
+      var uuid = String("{{ uuid | safe }}");
+
+      if(uuid.length > 0) {
+	  $.getJSON("api_get_timers_json", {}, function(json) {
+	      
+              if(json.length > 0) {
+		  for(var i = 0; i < json.length; i++) {
+                      var obj = json[i];
+
+
+		      if(uuid.indexOf(obj.uuid) != -1) {
+			  document.getElementById('select-timer-type').value = obj.type;
+			  $("#select-timer-type").selectmenu("refresh");
+
+			  var device = ""
+			  if(obj.topic.indexOf("feed") != -1) {
+			      device = "feed";
+			  } else if(obj.topic.indexOf("sprinkler") != -1) {
+			      device = "sprinkler";
+			  } else if(obj.topic.indexOf("water") != -1) {
+			      device = "water";
+			  } else if(obj.topic.indexOf("auto_on") != -1) {
+			      device = "auto_on";
+			  }			  
+			  document.getElementById('select-choice-device').value = device;
+			  $("#select-choice-device").selectmenu("refresh");
+
+			  if(device.indexOf("feed") != -1) {			      
+			      document.getElementById('on_off_block').style.visibility = "hidden"; 
+			      document.getElementById('feed_block').style.visibility = "visible";  
+			      document.getElementById('slider-feed').value = obj.value;
+			  } else {
+
+			      if(obj.value == 0) {
+				  document.getElementById('action').value = "Off";
+				  console.log("off");
+				  $("#action").val('off').slider("refresh");
+			      } else {
+				  document.getElementById('action').value = "On";
+				  console.log("on");
+
+				  $("#action").val('on').slider("refresh");
+			      }
+			      
+			      document.getElementById('on_off_block').style.visibility = "visible"; 
+			      document.getElementById('feed_block').style.visibility = "hidden";  
+			  }
+			  document.getElementById('time-field').value = obj.timeout;
+			  last_timeout = obj.last_timeout;
+
+		      }
+
+		  }
+		  //            document.getElementById("timers_table").innerHTML = html;
+              }
+	  });
+      }
+      
+      
+      function deleteFunc() {
+	  var dict = {uuid:uuid
+		     };
+
+	  $.ajax({
+              type: "POST", 
+              url: "/api_delete_timer_json",  
+              data : JSON.stringify(dict),
+              contentType: "application/json",
+              timeout: 3000,
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+		  alert("Failed to delete!");
+              },
+              success: function(msg){ 
+		  window.location.href = "/timers";
+		  
+              }
+	  });
+      }
+      function cancelFunc() {
+	  window.location.href = "/timers";
+      }
+      function submitFunc() {
+
+	  var topic = "";
+	  var value = 0;
+	  if(document.getElementById('select-choice-device').value.indexOf("feed") != -1) {
+	      value = document.getElementById('slider-feed').value;
+	      topic = "pc/fishfeeder/in/feed";	      
+	  }
+	  else {
+	      if( document.getElementById('action').value.indexOf("on") != -1) {
+		  value = 1;
+	      }
+	      topic = "pc/water_control/in/" + document.getElementById('select-choice-device').value;
+	  }
+	  var time = document.getElementById('time-field').value;
+	  
+	  console.log("time value" + time);
+
+	  // make sure we have the full time format HH:MM:SS (time field sometimes omit it)
+	  var count = (time.match(/:/g) || []).length;
+	  if(count == 0) {
+	      time = time + ":00:00";
+	  }
+	  else if(count == 1) {
+	      time = time + ":00";
+	  }
+	  
+	  var dict = {type:document.getElementById('select-timer-type').value,
+		      timeout:time,
+		      topic:topic,
+		      value:value,
+		      last_timeout:last_timeout,
+		      uuid:uuid
+		     };
+
+	  $.ajax({
+              type: "POST", 
+              url: "/api_add_timer_json",
+              data : JSON.stringify(dict),
+              contentType: "application/json",
+              timeout: 3000,
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+		  alert("Failed to submit!");
+              },
+              success: function(msg){ 
+		  window.location.href = "/timers";
+		  
+              }
+	  });
+      }
+      
+      function timerType(select) {
+	  const choice = select.value;
+	  
+	  if (choice === 'daily') {
+
+	      document.getElementById('time_label').innerHTML="Time:";  
+	      document.getElementById('time-field').value="09:00:00";  
+	      
+	  } else if (choice === 'one_off') {
+	      document.getElementById('time_label').innerHTML="Duration:";  
+	      document.getElementById('time-field').value="00:30:00";  
+	  } 
+      }
+      function deviceType(select) {
+	  const choice = select.value;
+	  
+	  if (choice === 'feed') {
+
+	      document.getElementById('on_off_block').style.visibility = "hidden"; 
+	      document.getElementById('feed_block').style.visibility = "visible";  
+	      
+	  } else {
+	      document.getElementById('on_off_block').style.visibility = "visible"; 
+	      document.getElementById('feed_block').style.visibility = "hidden";  
+	  } 
+      }
+      
+    </script>
+    
+    
+  </body>
+  
+  
+</html>

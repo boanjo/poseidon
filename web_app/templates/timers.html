@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <meta charset="utf8" />
+    <link rel="icon" type="image/png" href="/static/images/pc.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <link rel="stylesheet" href="https://unpkg.com/js-datepicker@4.0.5/dist/datepicker.min.css"/>    
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/js-datepicker@4.0.5/dist/datepicker.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>    
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">    
+    <style type="text/css">
+      
+      
+    </style>
+    
+    
+    <script>
+    </script>    
+  </head>
+  <body>
+    
+    
+    <div data-role="page">
+      <div data-role="header"> 
+	<button type="button" onclick="window.location.href='/dashboard'" class="ui-btn-left">dashboard</button>
+        <h1>{{title}}</h1>
+      </div> 
+      
+
+
+
+      <div role="main" class="ui-content">
+
+
+
+	<div href="#" id="timers_table"></div>
+
+	<button type="button" onclick="window.location.href='/timer'">Add new Timer!</button>
+
+        
+      </div>
+      
+      <div data-role="footer"> 
+        <h4>
+          &copy; 2021 - Anders Boan Johansson
+        </h4> 
+      </div>
+    </div>
+
+    
+    <script type="text/javascript">            
+
+      var topic = String("{{ topic | safe }}");
+
+      var dict = {};
+
+      if(topic.length > 0) {
+	  dict = {topic:topic};
+      } else {
+	  topic = "All devices";
+      }
+
+      
+      $.getJSON("api_get_timers_json", dict, function(json) {
+
+          if(json.length > 0) {
+
+              var html = `<div class="ui-corner-all custom-corners">
+                        <div class="ui-bar ui-bar-a">
+                        <h3>` + topic + `</h3>
+                        </div>
+                        <div class="ui-body ui-body-a">
+                        <table class="">
+                        <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Topic</th>
+                        <th>Timeout</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>uuid</th>
+                        </tr>
+                        </thead>
+                        <tbody>`;
+
+
+	      for(var i = 0; i < json.length; i++) {
+                  var obj = json[i];
+                  console.log(obj);
+
+                  html+=`<tr>` +
+		      `<td>` + (i+1) + `</td>` +
+		      `<td>` + obj.topic + `</td>` +
+		      `<td>` + obj.timeout + `</td>` +
+		      `<td>` + obj.type + `</td>` +
+		      `<td>` + obj.value + `</td>` +
+		      `<td><button type="button" onclick="window.location.href='/timer?uuid=` + obj.uuid +`'">Edit/Delete</button></td></tr>`;
+
+
+	      }
+              html +=`</tbody>
+                        </table>
+                        </div>
+                        </div>`;
+
+              document.getElementById("timers_table").innerHTML = html;
+          }
+      });
+
+      
+    </script>
+    
+  </body>
+  
+  
+</html>
