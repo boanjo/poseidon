@@ -101,7 +101,7 @@ def check_for_timeout(mqttc, timer):
 
             # Time to send action
             print("Timer expired! {0}".format(timer))
-            mqttc.publish(timer['topic'], "{value:" + str(timer['value']) + "}", qos=0)
+            mqttc.publish(timer['topic'], "{value:" + str(int(timer['value'])) + "}", qos=0)
                             
             if 'daily' in timer['type']:
                 #restart timer or republish in database with updated last timeout
@@ -146,6 +146,7 @@ def get_db_client(dbname):
             return client
         except ConnectionError as e:
             print(f"Connection failure: {dbname}!")
+            print(e)
             time.sleep(1)
     
                                 

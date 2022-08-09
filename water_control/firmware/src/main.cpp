@@ -2,9 +2,25 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define SERIES_RESISTOR 560
+#define LEVEL_SENSOR_KUS   0
+#define LEVEL_SENSOR_ETAPE 1
 
+long levelSensorType = LEVEL_SENSOR_KUS;
 #define WATER_LEVEL_PIN A0
+
+// For a KUS reed swith type of sensor it's optimal to find a wanted level between two reistances (the sensor has a granularity
+// of 20-22mm). If you select it carfully you can still accomplish a threshold that is within +-5mm or so. In the example below
+// i have a 300mm KUS sensor which then has 13 steps(0-192 fixed resistances. so the value i want to stay at is just when it
+// toggles to the second highest level 91.5% and the 3:d highest level is at 86.5%. hence i have selected min and max level as
+// two values inbetween. The reed switched has a built in hysteresis. So when a reed switch gets activated it will continue to
+// hold slightly longer until the next switch gets activated.
+// Operations will then be: we fill until the 91.5% is reached and then stop. When the level is slowwly decreasing (remove water
+// or waporize) iit will continue to hold the level at 91.5% for another 5-10mm and then toggle to 86.5%. We will then be below the
+// min and once again we will fill up again. I.e. we can achieve 5-10 mm operations accuracy even if it is only 20-22mm for the
+// actual sensor.
+long waterLevelLow = 88;
+long waterLevelHigh = 89;
+
 #define FLOW_SENSOR_PIN 2
 #define SPRINKLER_1_CONTROL_PIN 6
 #define WATER_CONTROL_PIN 5
@@ -17,6 +33,7 @@
 #define MODE_WATER_MANUAL 0
 #define MODE_WATER_AUTOMATIC 1
 
+
 float levelArray[NO_OF_LEVEL_AVERAGE_ITEMS];
 long levelAvgCnt = 0;
 byte waterMode = MODE_WATER_AUTOMATIC;
@@ -25,8 +42,6 @@ byte sprinkler1State = STATE_WATER_OFF;
 unsigned long previousMillis = 0;
 unsigned long interval = 3000;
 String inputString = ""; // a string to hold incoming data
-long waterLevelLow = 160;
-long waterLevelHigh = 165;
 
 volatile uint32_t flowPulses = 0;
 volatile uint8_t lastFlowPinState = LOW;
@@ -97,8 +112,6 @@ void printState(bool state) {
 void loop(void)
 {
   const byte strLen = 8;
-  byte present = 0;
-  byte type_s;
   char litersStr[strLen];
   char levelStr[strLen];
   float waterLevel;
@@ -208,19 +221,34 @@ void loop(void)
       liters = 0;
     dtostrf(liters, 7, 1, litersStr);
 
-    // Calculate the Water level in pond
-    waterLevel = analogRead(WATER_LEVEL_PIN);
+    // Read the KUS or etape voltage divider
+    int analogLevelValue = analogRead(WATER_LEVEL_PIN);
 
-    // convert the value to resistance
-    waterLevel = (1023 / waterLevel) - 1;
-    waterLevel = SERIES_RESISTOR / waterLevel;
-    waterLevel = 1483 - waterLevel;
-    waterLevel = waterLevel / 6;
-    waterLevel += 50;
+    if(levelSensorType == LEVEL_SENSOR_KUS) {
+      // KUS European level switch goes between 0-192 ohm (192 100% full)
+      // Voltage divider tells us R2/(R1+R2) where R2 is the KUS variable resistance
+      // and R1 is the fixed 100ohm resistance
+      // So the max analog read would be 192/(192+100)*1023=673
+      // So to get the percentage fill level 0-100% we can divide the analog value
+      // with 6.73
+      
+      waterLevel = analogLevelValue / 6.73;
+    } else {
 
-    // TODO Fixme magic number
-    waterLevel += 30;
+      // milonetech etape (use RSense i.e. middle two pins as R2 and outer two pins (RRef) as R1
+      // For an empty level (i.e. no water contact on Rsense) the two resistances should be roughly the same
+      // 2.2k/(2.2k+2.2k)*1023=512 
+      waterLevel = 100.0 - (analogLevelValue / 5.12);
 
+      // As an example a completly submerged etape will have a resistance of 400ohm on RSense. This means that
+      // the fill level will never reach 100% (analogLevelValue will show ~93 i.e. waterLevel = 82% (100-(93/5.12)
+      // Select the level min max (waterLevelLow, waterLevelHigh) thresholds accordingly
+      
+      if(waterLevel < 0.0) {
+	waterLevel = 0.0;
+      }
+    }
+    
     levelArray[levelAvgCnt % NO_OF_LEVEL_AVERAGE_ITEMS] = waterLevel;
     levelAvgCnt++;
 
@@ -233,17 +261,16 @@ void loop(void)
 
       waterLevelAvg = waterLevelAvg / NO_OF_LEVEL_AVERAGE_ITEMS;
 
-      // The etape is only supposed to read values starting from 1 inch (i.e. 25.4mm) so how
-      // can we get lower values? And beyond 8*25.4 should not be possible either
-      // Lets turn off water and auto just to not overfill. Something is wrong....
-      if ((waterLevelAvg < 15) || (waterLevelAvg > 200))
+      // Something is fishy, better turn off the auto mode too
+      if (waterLevelAvg > 95)
       {
-        waterMode = MODE_WATER_MANUAL;
+	if(waterMode == MODE_WATER_AUTOMATIC)
+	{
+	  waterMode = MODE_WATER_MANUAL;
 
-        //waterLevelAvg = 0;
-        
-        digitalWrite(WATER_CONTROL_PIN, LOW);
-        waterState = STATE_WATER_OFF;
+	  digitalWrite(WATER_CONTROL_PIN, LOW);
+	  waterState = STATE_WATER_OFF;
+	}
       }
 
       if (waterMode == MODE_WATER_AUTOMATIC)
@@ -265,6 +292,10 @@ void loop(void)
 
    
     //######### SERIAL SEND ################
+
+    Serial.print("{analog_level_value,");
+    Serial.print(analogLevelValue);
+    Serial.println("}");
 
     Serial.print("{flow,");
     for(int i = 0; i < strLen; i++) {

@@ -199,9 +199,11 @@
 	  }
 
 	  var sensor_dict = {};
-	  sensor_dict['pc/atlas_hydro/out/ec'] = {last:0,min:0,max:0,unit:"µS/cm",name:"ec"};
-	  sensor_dict['pc/atlas_hydro/out/ph'] = {last:0,min:0,max:0,unit:"",name:"ph"};
-	  sensor_dict['pc/atlas_hydro/out/temp'] = {last:0,min:0,max:0,unit:"°C",name:"temp"};
+	  sensor_dict['pc/water_quality/out/ec'] = {last:0,min:0,max:0,unit:"µS/cm",name:"ec"};
+	  sensor_dict['pc/water_quality/out/ph'] = {last:0,min:0,max:0,unit:"",name:"ph"};
+	  sensor_dict['pc/water_quality/out/do'] = {last:0,min:0,max:0,unit:"mV",name:"do"};
+	  sensor_dict['pc/water_quality/out/orp'] = {last:0,min:0,max:0,unit:"mV",name:"orp"};
+	  sensor_dict['pc/water_quality/out/temp'] = {last:0,min:0,max:0,unit:"°C",name:"temp"};
 	  sensor_dict['pc/water_control/out/flow'] = {last:0,min:0,max:0,unit:"lit",name:"flow"};
 	  sensor_dict['pc/water_control/out/level'] = {last:0,min:0,max:0,unit:"mm",name:"level"};
 
@@ -371,6 +373,10 @@
 	<p id="temp p"></p>
 	PH :    <span id="ph_span" style="font-size: 3vh; font-weight: bold;"></span><span id="ph_small_span" style="font-size: 2vh; font-weight: plain; float:right"></span>
 	<p id="ph p"></p>
+	DO :    <span id="do_span" style="font-size: 3vh; font-weight: bold;"></span><span id="do_small_span" style="font-size: 2vh; font-weight: plain; float:right"></span>
+	<p id="do p"></p>
+	ORP :    <span id="orp_span" style="font-size: 3vh; font-weight: bold;"></span><span id="orp_small_span" style="font-size: 2vh; font-weight: plain; float:right"></span>
+	<p id="orp p"></p>
 	EC :    <span id="ec_span" style="font-size: 3vh; font-weight: bold;"></span><span id="ec_small_span" style="font-size: 2vh; font-weight: plain; float:right"></span>
 	<p id="ec p"></p>
 	Level : <span id="level_span" style="font-size: 3vh; font-weight: bold;">163.1</span><span id="level_small_span" style="font-size: 2vh; font-weight: plain; float:right">163.1</span>

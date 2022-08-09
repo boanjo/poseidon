@@ -3,7 +3,7 @@ import time
 import queue
 import paho.mqtt.client as mqtt
 
-topic = "pc/water_control/in/#"
+topic = "pc/water_quality/in/#"
 q = queue.Queue()
 
 def on_connect(mqttc, obj, flags, rc):
@@ -39,7 +39,7 @@ mqttc.on_subscribe = on_subscribe
 # mqttc.on_log = on_log
 mqttc.connect("mosquitto", 1883, 60)
 
-ser = serial.Serial('/dev/ttyWaterControl', 115200, timeout=1)
+ser = serial.Serial('/dev/ttyWaterQuality', 115200, timeout=1)
 time.sleep(2)
 
 print("Starting reading")
@@ -68,16 +68,8 @@ while True:
             value = line[line.find(",")+1:line.find("}")]
 
             msg = None
-            topic = "pc/water_control/out/" + key
-            if 'o' in value:
-                if 'on' in value:
-                    value = 1
-                else:
-                    value = 0
-                    
-                msg = "{\"value\":" + str(value) + ",\"type\":\"state\"}"
-            else:
-                msg = "{\"value\":" + str(value) + "}" 
+            topic = "pc/water_quality/out/" + key
+            msg = "{\"value\":" + str(value) + "}" 
                 
             mqttc.publish(topic, msg, qos=0)
             #print("published: " + topic + " " + msg)

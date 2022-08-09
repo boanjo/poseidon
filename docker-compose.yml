@@ -2,16 +2,38 @@ version: '2'
 services:
 
   water_control:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     restart: unless-stopped
     build:
       context: ./water_control/
       dockerfile: ./Dockerfile
     devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/ttyUSB0:/dev/ttyWaterControl
+    depends_on:
+      - mosquitto
+
+  water_quality:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    restart: unless-stopped
+    build:
+      context: ./water_quality/
+      dockerfile: ./Dockerfile
+    devices:
+      - /dev/ttyACM0:/dev/ttyWaterQuality
     depends_on:
       - mosquitto
 
   web_app:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     restart: unless-stopped
     build:
       context: ./web_app/
@@ -26,6 +48,10 @@ services:
 
       
   pond_control:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     restart: unless-stopped
     build:
       context: ./pond_control/
@@ -37,6 +63,10 @@ services:
       - mosquitto
       
   mosquitto:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     restart: unless-stopped
     build:
       context: ./mosquitto/
@@ -46,6 +76,10 @@ services:
       - "9001:9001"
       
   influxdb:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     # Full tag list: https://hub.docker.com/r/library/influxdb/tags/
     restart: unless-stopped
     image: "influxdb:1.8"
@@ -62,6 +96,10 @@ services:
       - "8089:8089/udp"
 
   telegraf:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     # Full tag list: https://hub.docker.com/r/library/telegraf/tags/
     restart: unless-stopped
     image: "telegraf:latest"
@@ -80,6 +118,10 @@ services:
       - influxdb
 
   chronograf:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     # Full tag list: https://hub.docker.com/r/library/chronograf/tags/
     restart: unless-stopped
     image: "chronograf:latest"
@@ -100,7 +142,30 @@ services:
       - influxdb
       - telegraf
 
+  grafana:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    # Full tag list: https://hub.docker.com/r/library/chronograf/tags/
+    restart: unless-stopped
+    image: "grafana/grafana:latest"
+    volumes:
+      # Mount for chronograf database
+      - ./grafana/data/:/var/lib/grafana/
+    links:
+      - influxdb
+    ports:
+      # The WebUI for Chronograf is served on port 8888
+      - "3000:3000"
+    depends_on:
+      - influxdb
+
   kapacitor:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
   # Full tag list: https://hub.docker.com/r/library/kapacitor/tags/
     restart: unless-stopped
     image: "kapacitor:latest"

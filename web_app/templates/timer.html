@@ -51,7 +51,7 @@
 	    <label for="select-choice-device" class="select">Choose device:</label>
 	    <select name="select-choice-device" id="select-choice-device"  onchange="deviceType(this)">
 	      <option value="feed">Fish Feed</option>
-	      <option value="sprinkler">Sprinkler</option>
+	      <option value="sprinkler1">Sprinkler</option>
 	      <option value="water">Pond Water</option>
 	      <option value="auto_level">Auto Level</option>
 	    </select>
@@ -129,8 +129,8 @@
 			  var device = ""
 			  if(obj.topic.indexOf("feed") != -1) {
 			      device = "feed";
-			  } else if(obj.topic.indexOf("sprinkler") != -1) {
-			      device = "sprinkler";
+			  } else if(obj.topic.indexOf("sprinkler1") != -1) {
+			      device = "sprinkler1";
 			  } else if(obj.topic.indexOf("water") != -1) {
 			      device = "water";
 			  } else if(obj.topic.indexOf("auto_on") != -1) {

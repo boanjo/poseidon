@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" type="image/png" href="/static/images/pc.png" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+    <title>Pond Control</title>
+    
+
+    <style type="text/css">
+
+
+      BODY {
+	  /* text-align: justify; */
+	  font-family: helvetica, sans-serif;
+	  /* For the REC: background: #def url(recbg.jpg); */
+      }
+      H2, H3, H4, H5, H6 {
+	  text-align: left;
+	  height: 100%;
+      }
+      
+      .info-field {
+	  width: 12em !important;
+	  background-color: rgba(0,0,0,0.5) !important;
+	  color: white;
+	  font-weight: bold;
+	  padding: .75em 1em;
+	  border: none;
+	  border-radius: 0.5em;
+	  margin-top: 0.5em;
+	  margin-left: 0.5em;
+      }
+      
+      .info-field :last-child {margin-bottom: 0}
+      .info-field :first-child {margin-top: 0}
+      #info-field, #info-field + * {display: none}
+
+      .button {
+	  display: inline-block;
+	  padding: 1.0em 4.8em;
+	  font-weight: bold;
+	  cursor: pointer;
+	  text-align: left;
+	  text-decoration: none;
+	  outline: none;
+	  color: #fff;
+	  border: none;
+	  border-radius: 0.6em;
+	  
+	  background: #ccc url('/static/images/pc.png') no-repeat top right;
+	  background-size: 3em 3em;
+	  background-color: #4CAF50;
+      }
+      
+      .button:active {
+	  background-color: #3e8e41;
+	  transform: translateY(0.25em);
+      }           
+    </style>
+    <script>
+
+
+      // Connect to the Socket.IO server.
+      // The connection URL has the following format, relative to the current page:
+      //     http[s]://<domain>:<port>[/<namespace>]
+      var socket = io();
+      var msgCount = 0;
+      var debug = false;
+      var sensor_dict = {};
+      sensor_dict['pc/atlas_hydro/out/ec'] = {last:0,min:0,max:0,unit:"µS/cm",name:"ec"};
+      sensor_dict['pc/atlas_hydro/out/ph'] = {last:0,min:0,max:0,unit:"",name:"ph"};
+      sensor_dict['pc/atlas_hydro/out/temp'] = {last:0,min:0,max:0,unit:"°C",name:"temp"};
+      sensor_dict['pc/water_control/out/flow'] = {last:0,min:0,max:0,unit:"lit",name:"flow"};
+      sensor_dict['pc/water_control/out/level'] = {last:0,min:0,max:0,unit:"mm",name:"level"};
+      /**
+       * Returns a random integer between min (inclusive) and max (inclusive).
+       * The value is no lower than min (or the next integer greater than min
+       * if min isn't an integer) and no greater than max (or the next integer
+       * lower than max if max isn't an integer).
+       * Using Math.round() will give you a non-uniform distribution!
+       */
+      function getRandomInt(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      function log(msg) {
+	  if(debug) {
+	      var today = new Date();
+	      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	      var log = document.getElementById('log');
+	      console.log(time + " " + msg);
+	  }
+      }
+
+      function feed() {
+	  
+	  var dict = {"value":3};
+	  
+	  $.ajax({
+	      type: "POST", 
+	      url: "/api_feed_json",  
+	      data : JSON.stringify(dict),
+	      contentType: "application/json",
+	      timeout: 3000,
+	      error: function(XMLHttpRequest, textStatus, errorThrown) {
+		  alert("Failed to feed!");
+	      },
+	      success: function(msg){ 
+		  
+	      }
+	  });	      
+      }
+      
+      // Event handler for new connections.
+      // The callback function is invoked when a connection with the
+      // server is established.
+      socket.on('connect', function() {
+          socket.emit('my_event', {data: 'pond_no_bg connected!'});
+      });
+      
+      // Event handler for server sent data.
+      // The callback function is invoked whenever the server emits data
+      // to the client. The data is then displayed in the "Received"
+      // section of the page.
+      socket.on('my_response', function(msg, cb) {
+      });
+      
+      // Event handler for server sent data.
+      // The callback function is invoked whenever the server emits data
+      // to the client. The data is then displayed in the "Received"
+      // section of the page.
+      socket.on('mqtt_msg', function(msg, cb) {
+	  
+	  log('Received #' + msg.topic + " " + msg.payload);
+	  try {
+	      var topic = "" + msg.topic;
+	      var payload = msg.payload;
+
+	      msgCount++;
+	      
+	      //document.getElementById("msg_span").innerHTML = "" + msgCount;		  
+
+	      
+	      if(topic in sensor_dict) {
+		  if(payload.indexOf(":") != -1) {
+		      if(payload.indexOf("}") != -1) {
+			  var val =  payload.substring(payload.indexOf(":")+1, payload.indexOf("}"));
+			  sensor_dict[topic].last = parseFloat(val);
+
+			  if(topic in sensor_dict) {
+			      document.getElementById(sensor_dict[topic].name + "_span").innerHTML = val;		  
+			      
+			  }
+		      }
+		  }
+
+	      }
+	      
+	  } catch (error) {
+	      console.error(error);
+	      log(error);
+	  }
+      });
+
+      </script>
+  </head>
+  <body>
+
+    
+    <!-- info -->
+    <div> 
+      <div class="info-field"> 
+	Temp (°C): <span id="temp_span" class="wfid_temp39468 wfid_tempspan" style="font-size: 2.1em; font-weight: bold;">-0.1</span><p class="wfid_temp112520 p"></p>
+	PH: <span id="ph_span" class="wfid_temp141509 wfid_phspan" style="font-size: 2.1em; font-weight: bold;"></span><p class="wfid_temp146453 p"></p>
+	EC: <span id="ec_span" class="wfid_temp1415091 wfid_phspan1" style="font-size: 2.1em; font-weight: bold;"></span><p class="wfid_temp1464531 p"></p>
+	Level (mm): <span id="level_span" class="wfid_temp148611 wfid_levelspan" style="font-size: 2.1em; font-weight: bold;"></span><p class="wfid_temp150626 p"></p>
+	Flow (liters): <span id="flow_span" class="wfid_temp151889 wfid_flowspan" style="font-size: 2.1em; font-weight: bold;">0</span><p class="wfid_temp153522 p"></p>
+	<input onclick="feed()" type="button" value="Feed" class="wfid_temp182451 wfid_feed button">
+      </div>
+    </div>
+  </body>
+</html>

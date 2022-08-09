@@ -65,7 +65,7 @@ def my_event(message):
 
 def request_acknowledge(data):
     seq_no  = data['seq_no']
-    mqtt.publish("pc/water_control/in/ack_request", "{value," + str(seq_no) + "}", qos=0)
+    mqtt.publish("pc/water_control/in/ack_request", "{value:" + str(seq_no) + "}", qos=0)
     
 
 @mqtt.on_connect()
@@ -105,9 +105,11 @@ def get_values_for_topic(topic):
 def api_get_last_values_json():
 
     ret_list = []
-    ret_list.append(get_values_for_topic("pc/atlas_hydro/out/temp"))
-    ret_list.append(get_values_for_topic("pc/atlas_hydro/out/ph"))
-    ret_list.append(get_values_for_topic("pc/atlas_hydro/out/ec"))
+    ret_list.append(get_values_for_topic("pc/water_quality/out/temp"))
+    ret_list.append(get_values_for_topic("pc/water_quality/out/ph"))
+    ret_list.append(get_values_for_topic("pc/water_quality/out/ec"))
+    ret_list.append(get_values_for_topic("pc/water_quality/out/do"))
+    ret_list.append(get_values_for_topic("pc/water_quality/out/orp"))
     ret_list.append(get_values_for_topic("pc/water_control/out/level"))
     ret_list.append(get_values_for_topic("pc/water_control/out/flow"))
     #ret_list.append(get_values_for_topic("pc/water_control/out/sprinkler1"))
@@ -196,7 +198,7 @@ def api_device_control_json():
         value = data['value']
         if "topic" in data:
             topic = data['topic']
-            mqtt.publish(topic, "{value," + str(value) + "}", qos=0)
+            mqtt.publish(topic, "{value:" + str(value) + "}", qos=0)
             request_acknowledge(data)
     
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
@@ -207,7 +209,7 @@ def api_feed_json():
     data = request.get_json()
     if "value" in data:
         value = data['value']
-    mqtt.publish("pc/fishfeeder/in/feed", "{value," + str(value) + "}", qos=0)
+    mqtt.publish("pc/fishfeeder/in/feed", "{value:" + str(value) + "}", qos=0)
     
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
     
@@ -245,9 +247,15 @@ def timer():
                            title='Add/Edit/Delete timer',
                            uuid=uuid)
 
+@app.route('/')
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html',
+                           title='Pond Control 2.0')
+
+@app.route('/pond_no_bg')
+def pond_no_bg():
+    return render_template('pond_no_bg.html',
                            title='Pond Control 2.0')
 
 if __name__ == '__main__':

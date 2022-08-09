@@ -5,5 +5,5 @@ echo "*****************************************************************"
 
 pio run -t clean
 pio run
-pio run -t upload
-pio device monitor
+pio run -t upload --upload-port /dev/ttyACM0 
+pio device monitor -p /dev/ttyACM0

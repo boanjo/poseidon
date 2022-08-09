@@ -1,0 +1,9 @@
+echo "*****************************************************************"
+echo "Don't forget to stop the serial_2_mqtt container first or the USB"
+echo "port will be blocked for uploading new sketch"
+echo "*****************************************************************"
+
+pio run -t clean
+pio run
+pio run -t upload --upload-port /dev/ttyUSB0 
+pio device monitor -p /dev/ttyUSB0 
