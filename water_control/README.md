@@ -34,3 +34,7 @@ For programming of the firmware i've installed the platformio cli version https:
 The firmware basically consists of and serial command input handler to be able to act on commands from the controller, setting levels etc. Then there is a small interrupt function that calculates any triggers from the water flow sensor and then in the loop a (quite sketchy ;-)) conversion of ticks into liters (you probably need to calibrate it to get as good flow accuracy). The percentage level of the KUS or etape sensor is done using a voltage divider. By using the ADC value (max 1024) you can then get the relative % (For more details see the source code). Once the level reaches a low point this triggers (if auto level is on) the water solenoid to open. Once the max is reached the water stops to fill again. The sensor blindly updates all values and states every sample period which is set to default every 3 seconds (or immediately if ack is requested).   
 ![6](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_voltage_divider.png?raw=true "Voltage Divider")
 
+On the RPI there is a serial2mqtt.py application running and as the name indicates it bridges between the serial commands and the mqtt GW.
+
+
+Here is a YouTube video from some of the building step and any programming needed.

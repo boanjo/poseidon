@@ -8,6 +8,8 @@ The application is built mainly of 5 parts (For a deeper description use the REA
 * [Water Quality - Atlas scientific sensors](https://github.com/boanjo/poseidon/tree/main/water_quality/README.md) in custom casing and mounted in a Sieve filter
 * [Pond Control](https://github.com/boanjo/poseidon/tree/main/pond_control/README.md) which is the "controller" in this setup 
 
+![0](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_overview.JPG?raw=true "Overview!")
+
 All services are communicating through a MQTT (mosquitto) gateway (also running on the RPI). The Fishfeeder firmware is running on a Wemos D1 mini over wifi, the water quality on a Arduino UNO and the water control on an Arduino Nano 
 
 The services are started using docker composer so you can update the docker-compose.yml to suite your needs. 
