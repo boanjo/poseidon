@@ -7,9 +7,9 @@ The water quality is monitored with a set of sensors or probes from Atlas Scient
 
 On the RPI there is a serial2mqtt.py application running and as the name indicates it bridges between the serial commands and the mqtt GW.
 
-
-<a id="raw-url" href="https://github.com/boanjo/boanjo.github.io/blob/master/Probe%20mounting%20v4.step"> Probe mounting - Download STEP file to be able to edit or print</a>
-<a id="raw-url" href="https://github.com/boanjo/boanjo.github.io/blob/master/water_quality%20v4.step"> Tentacle T1 mkII box - Download STEP file to be able to edit or print</a>
+See stl_step folder models (download and edit STEP or just print STL):
+![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_model_atlas_sensors.PNG?raw=true "Atlas sensors mounting model")
+![2](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_model_tentacle.PNG?raw=true "Tentacle T1 MKII box model")
 
 
 
