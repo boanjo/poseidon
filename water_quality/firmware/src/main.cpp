@@ -1,3 +1,5 @@
+// Based on the example sketch by https://www.whiteboxes.ch/docs/tentacle/t1-mkII
+
 #include <Arduino.h>
 #include <Ezo_i2c.h>                        //include the EZO I2C library from https://github.com/Atlas-Scientific/Ezo_I2c_lib
 #include <Wire.h>                           // enable I2C.
