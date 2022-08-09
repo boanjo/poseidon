@@ -225,7 +225,7 @@ void loop(void)
     int analogLevelValue = analogRead(WATER_LEVEL_PIN);
 
     if(levelSensorType == LEVEL_SENSOR_KUS) {
-      // KUS European level switch goes between 0-192 ohm (192 100% full)
+      // KUS European level switch goes between 0-192 (or actually 0-180 according to datasheet) ohm (192 100% full)
       // Voltage divider tells us R2/(R1+R2) where R2 is the KUS variable resistance
       // and R1 is the fixed 100ohm resistance
       // So the max analog read would be 192/(192+100)*1023=673
