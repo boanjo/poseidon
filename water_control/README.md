@@ -1,6 +1,6 @@
 # Water Control
 
-The water control is built from a miltone etape liquid ruler and a few solenoids (one for the pond and pone for the garden plants micro drip system) for adding tap water and also measuring the water amount used. You need to print a few parts with your 3D printer. I'm using PETG with support on most of the printouts so that it can resist the outdoor UV. I.m just doing basic sanding (paper and file) and then put some spray paint on it to look nice.
+The water control is built from a water level sensor (2 alternatives below) a few solenoids (one for the pond and pone for the garden plants micro drip system) for adding tap water and also measuring the water amount used. You need to print a few parts with your 3D printer. I'm using PETG with support on most of the printouts so that it can resist the outdoor UV. I.m just doing basic sanding (paper and file) and then put some spray paint on it to look nice.
 
 
 For the water level control i have 2 differnt solutions, where the first one is what i currently use:
