@@ -9,54 +9,30 @@
 		}
 	},
 	"dashboard": {
-		"id": "7",
+		"id": "9",
 		"cells": [
 			{
-				"i": "8e7e7c58-cf7b-42f4-9acf-479ed4b276d1",
-				"x": 4,
-				"y": 4,
+				"i": "0745adcd-9357-4b7a-bbcb-54b2545093bc",
+				"x": 0,
+				"y": 12,
 				"w": 4,
-				"h": 3,
-				"name": "etape analog read value",
+				"h": 4,
+				"name": "etape analog read",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\", max(\"value\") AS \"max_value\", min(\"value\") AS \"min_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/analog_level_value' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/analog_level_value' GROUP BY time(:interval:) FILL(null)",
 						"queryConfig": {
-							"database": "sensors",
+							"database": "sensors_downsampled",
 							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
+							"retentionPolicy": "autogen",
 							"fields": [
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "mean_mean_value",
 									"args": [
 										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								},
-								{
-									"value": "max",
-									"type": "func",
-									"alias": "max_value",
-									"args": [
-										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								},
-								{
-									"value": "min",
-									"type": "func",
-									"alias": "min_value",
-									"args": [
-										{
-											"value": "value",
+											"value": "mean_value",
 											"type": "field",
 											"alias": ""
 										}
@@ -120,21 +96,21 @@
 				"type": "line",
 				"colors": [
 					{
-						"id": "f6e89d7e-36a2-4038-8304-5793542fb652",
+						"id": "937a318e-6689-445c-9dc0-60049ba2c731",
 						"type": "scale",
 						"hex": "#31C0F6",
 						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "155d012e-48f1-4df3-a94f-cea5f860cf11",
+						"id": "d57eb0f7-02de-440d-a8e0-e69ed64681e2",
 						"type": "scale",
 						"hex": "#A500A5",
 						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "ea46736d-8956-4f23-9045-711616d6f69a",
+						"id": "8d748291-b49c-4989-a054-b9d770f87942",
 						"type": "scale",
 						"hex": "#FF7E27",
 						"name": "Nineteen Eighty Four",
@@ -167,166 +143,31 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/8e7e7c58-cf7b-42f4-9acf-479ed4b276d1"
+					"self": "/chronograf/v1/dashboards/9/cells/0745adcd-9357-4b7a-bbcb-54b2545093bc"
 				}
 			},
 			{
-				"i": "0bd8199d-128d-402b-a7b7-203699e95196",
-				"x": 8,
-				"y": 0,
-				"w": 4,
-				"h": 4,
-				"name": "DO (Dissolved Oxygne)",
-				"queries": [
-					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/do' GROUP BY time(:interval:) FILL(null)",
-						"queryConfig": {
-							"database": "sensors",
-							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
-							"fields": [
-								{
-									"value": "mean",
-									"type": "func",
-									"alias": "mean_value",
-									"args": [
-										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								}
-							],
-							"tags": {
-								"topic": [
-									"pc/water_quality/out/do"
-								]
-							},
-							"groupBy": {
-								"time": "auto",
-								"tags": []
-							},
-							"areTagsAccepted": true,
-							"fill": "null",
-							"rawText": null,
-							"range": null,
-							"shifts": null
-						},
-						"source": "",
-						"type": "influxql"
-					}
-				],
-				"axes": {
-					"x": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					},
-					"y": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					},
-					"y2": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					}
-				},
-				"type": "line",
-				"colors": [
-					{
-						"id": "d81bcb1f-59c3-4855-a268-2485a7a35fb8",
-						"type": "scale",
-						"hex": "#FDC44F",
-						"name": "Cthulhu",
-						"value": "0"
-					},
-					{
-						"id": "92f6cf51-06cc-4863-be84-f218e857039f",
-						"type": "scale",
-						"hex": "#007C76",
-						"name": "Cthulhu",
-						"value": "0"
-					},
-					{
-						"id": "bbd9034d-cde1-4f06-845a-dbe859e0d93f",
-						"type": "scale",
-						"hex": "#8983FF",
-						"name": "Cthulhu",
-						"value": "0"
-					}
-				],
-				"legend": {},
-				"tableOptions": {
-					"verticalTimeAxis": true,
-					"sortBy": {
-						"internalName": "time",
-						"displayName": "",
-						"visible": true
-					},
-					"wrapping": "truncate",
-					"fixFirstColumn": true
-				},
-				"fieldOptions": [
-					{
-						"internalName": "time",
-						"displayName": "",
-						"visible": true
-					}
-				],
-				"timeFormat": "MM/DD/YYYY HH:mm:ss",
-				"decimalPlaces": {
-					"isEnforced": true,
-					"digits": 2
-				},
-				"note": "",
-				"noteVisibility": "default",
-				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/0bd8199d-128d-402b-a7b7-203699e95196"
-				}
-			},
-			{
-				"i": "9354d330-3e53-428f-9096-22470961023d",
-				"x": 8,
-				"y": 8,
+				"i": "79cb2026-1a08-43f3-bbc0-97354176b34e",
+				"x": 4,
+				"y": 4,
 				"w": 4,
 				"h": 4,
 				"name": "ORP",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/orp' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/orp' GROUP BY time(:interval:) FILL(null)",
 						"queryConfig": {
-							"database": "sensors",
+							"database": "sensors_downsampled",
 							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
+							"retentionPolicy": "autogen",
 							"fields": [
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "mean_mean_value",
 									"args": [
 										{
-											"value": "value",
+											"value": "mean_value",
 											"type": "field",
 											"alias": ""
 										}
@@ -390,21 +231,21 @@
 				"type": "line",
 				"colors": [
 					{
-						"id": "5c1df852-8dbc-4818-bffb-aad19469c648",
+						"id": "5f501fa1-cf3c-444f-a404-938442f07426",
 						"type": "scale",
 						"hex": "#31C0F6",
 						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "2468e01f-604a-4c3e-9dbc-aac986922a11",
+						"id": "ff81abdf-1fd1-4f94-bcca-d44dd35caf7e",
 						"type": "scale",
 						"hex": "#A500A5",
 						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "d8f1b09b-b8c6-4e93-930e-ba81c3905541",
+						"id": "f191fdeb-58ea-4610-8759-96a31d0227fd",
 						"type": "scale",
 						"hex": "#FF7E27",
 						"name": "Nineteen Eighty Four",
@@ -437,31 +278,166 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/9354d330-3e53-428f-9096-22470961023d"
+					"self": "/chronograf/v1/dashboards/9/cells/79cb2026-1a08-43f3-bbc0-97354176b34e"
 				}
 			},
 			{
-				"i": "7bed6012-1a66-45f2-a3e0-f91e0cbfffb5",
+				"i": "553ecaf1-fbec-4e9a-ad4f-b7ce5a166918",
 				"x": 8,
 				"y": 4,
 				"w": 4,
 				"h": 4,
-				"name": "Water flow",
+				"name": "DO (Dissolved Oxygene)",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/flow' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/do' GROUP BY time(:interval:) FILL(null)",
 						"queryConfig": {
-							"database": "sensors",
+							"database": "sensors_downsampled",
 							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
+							"retentionPolicy": "autogen",
 							"fields": [
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "mean_mean_value",
 									"args": [
 										{
-											"value": "value",
+											"value": "mean_value",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"topic": [
+									"pc/water_quality/out/do"
+								]
+							},
+							"groupBy": {
+								"time": "auto",
+								"tags": []
+							},
+							"areTagsAccepted": true,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "5f501fa1-cf3c-444f-a404-938442f07426",
+						"type": "scale",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "ff81abdf-1fd1-4f94-bcca-d44dd35caf7e",
+						"type": "scale",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "f191fdeb-58ea-4610-8759-96a31d0227fd",
+						"type": "scale",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/9/cells/553ecaf1-fbec-4e9a-ad4f-b7ce5a166918"
+				}
+			},
+			{
+				"i": "ae276c9f-cffb-42cc-95a8-45108f316229",
+				"x": 0,
+				"y": 4,
+				"w": 4,
+				"h": 4,
+				"name": "Water flow (liters)",
+				"queries": [
+					{
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/flow' GROUP BY time(:interval:) FILL(null)",
+						"queryConfig": {
+							"database": "sensors_downsampled",
+							"measurement": "pond_control",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_mean_value",
+									"args": [
+										{
+											"value": "mean_value",
 											"type": "field",
 											"alias": ""
 										}
@@ -525,24 +501,24 @@
 				"type": "line",
 				"colors": [
 					{
-						"id": "7c02b0fb-c3ec-4c50-85ab-0440f74db8e3",
+						"id": "c3be76f2-68d6-4780-a91b-9427cd329628",
 						"type": "scale",
-						"hex": "#31C0F6",
-						"name": "Nineteen Eighty Four",
+						"hex": "#74D495",
+						"name": "Atlantis",
 						"value": "0"
 					},
 					{
-						"id": "e94b5f59-7562-4362-ba77-0eaf7f88f118",
+						"id": "d7b31f8a-40ef-4a01-bbc1-9638f55d1c78",
 						"type": "scale",
-						"hex": "#A500A5",
-						"name": "Nineteen Eighty Four",
+						"hex": "#3F3FBA",
+						"name": "Atlantis",
 						"value": "0"
 					},
 					{
-						"id": "08bdc490-ad36-4a8d-92e4-0a581384f4bc",
+						"id": "af1e7499-01bb-43c6-a746-73b145c9705e",
 						"type": "scale",
-						"hex": "#FF7E27",
-						"name": "Nineteen Eighty Four",
+						"hex": "#FF4D9E",
+						"name": "Atlantis",
 						"value": "0"
 					}
 				],
@@ -572,35 +548,28 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/7bed6012-1a66-45f2-a3e0-f91e0cbfffb5"
+					"self": "/chronograf/v1/dashboards/9/cells/ae276c9f-cffb-42cc-95a8-45108f316229"
 				}
 			},
 			{
-				"i": "acdf37c5-7849-4fc1-837a-3db1f085d01e",
-				"x": 4,
-				"y": 7,
+				"i": "d56c188b-feae-4e51-b6f8-6d719b62306f",
+				"x": 0,
+				"y": 8,
 				"w": 4,
 				"h": 4,
-				"name": "Water on/off",
+				"name": "Water state (on/off)",
 				"queries": [
 					{
-						"query": "SELECT max(\"value\") AS \"max_value\" FROM \"devices\".\"keep_forever\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/water' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT \"value\" FROM \"devices\".\"keep_forever\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/water'",
 						"queryConfig": {
 							"database": "devices",
 							"measurement": "pond_control",
 							"retentionPolicy": "keep_forever",
 							"fields": [
 								{
-									"value": "max",
-									"type": "func",
-									"alias": "max_value",
-									"args": [
-										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
+									"value": "value",
+									"type": "field",
+									"alias": ""
 								}
 							],
 							"tags": {
@@ -609,11 +578,10 @@
 								]
 							},
 							"groupBy": {
-								"time": "auto",
+								"time": "",
 								"tags": []
 							},
 							"areTagsAccepted": true,
-							"fill": "null",
 							"rawText": null,
 							"range": null,
 							"shifts": null
@@ -660,24 +628,24 @@
 				"type": "line-stepplot",
 				"colors": [
 					{
-						"id": "d727d16e-2c7d-4deb-94e1-e29cb1126fad",
+						"id": "f06b5276-9748-4f26-8722-83e584a941ce",
 						"type": "scale",
-						"hex": "#31C0F6",
-						"name": "Nineteen Eighty Four",
+						"hex": "#FDC44F",
+						"name": "Cthulhu",
 						"value": "0"
 					},
 					{
-						"id": "111b0ddd-3bb4-4bd1-903e-91c75d7cfdef",
+						"id": "4f3612e2-057c-4afe-91d8-f310727046c4",
 						"type": "scale",
-						"hex": "#A500A5",
-						"name": "Nineteen Eighty Four",
+						"hex": "#007C76",
+						"name": "Cthulhu",
 						"value": "0"
 					},
 					{
-						"id": "17d7c9c0-4d8c-4f53-b34c-e44a3a6a4272",
+						"id": "7f0d7ae9-edef-46e6-98c2-0dd46ef80469",
 						"type": "scale",
-						"hex": "#FF7E27",
-						"name": "Nineteen Eighty Four",
+						"hex": "#8983FF",
+						"name": "Cthulhu",
 						"value": "0"
 					}
 				],
@@ -707,190 +675,31 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/acdf37c5-7849-4fc1-837a-3db1f085d01e"
+					"self": "/chronograf/v1/dashboards/9/cells/d56c188b-feae-4e51-b6f8-6d719b62306f"
 				}
 			},
 			{
-				"i": "1ddead44-dbf5-4176-9391-88e950d6ef03",
+				"i": "35352821-51e3-4cce-80d4-25ac6ba9a165",
 				"x": 0,
 				"y": 0,
 				"w": 4,
 				"h": 4,
-				"name": "Temperature",
+				"name": "Water level (%)",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/temp' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/level' GROUP BY time(:interval:) FILL(null)",
 						"queryConfig": {
-							"database": "sensors",
+							"database": "sensors_downsampled",
 							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
+							"retentionPolicy": "autogen",
 							"fields": [
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "mean_mean_value",
 									"args": [
 										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								}
-							],
-							"tags": {
-								"topic": [
-									"pc/water_quality/out/temp"
-								]
-							},
-							"groupBy": {
-								"time": "auto",
-								"tags": []
-							},
-							"areTagsAccepted": true,
-							"fill": "null",
-							"rawText": null,
-							"range": null,
-							"shifts": null
-						},
-						"source": "",
-						"type": "influxql"
-					}
-				],
-				"axes": {
-					"x": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					},
-					"y": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					},
-					"y2": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					}
-				},
-				"type": "line",
-				"colors": [
-					{
-						"id": "cdb28e75-3a76-4a0b-a4dd-92f352e41266",
-						"type": "scale",
-						"hex": "#F6F6F8",
-						"name": "T-Max 400 Film",
-						"value": "0"
-					},
-					{
-						"id": "a0dddb3e-f441-42d8-a188-f59a308a062d",
-						"type": "scale",
-						"hex": "#A4A8B6",
-						"name": "T-Max 400 Film",
-						"value": "0"
-					},
-					{
-						"id": "d3554c74-5de0-4367-b1b2-bf1010f43124",
-						"type": "scale",
-						"hex": "#545667",
-						"name": "T-Max 400 Film",
-						"value": "0"
-					}
-				],
-				"legend": {},
-				"tableOptions": {
-					"verticalTimeAxis": true,
-					"sortBy": {
-						"internalName": "time",
-						"displayName": "",
-						"visible": true
-					},
-					"wrapping": "truncate",
-					"fixFirstColumn": true
-				},
-				"fieldOptions": [
-					{
-						"internalName": "time",
-						"displayName": "",
-						"visible": true
-					}
-				],
-				"timeFormat": "MM/DD/YYYY HH:mm:ss",
-				"decimalPlaces": {
-					"isEnforced": true,
-					"digits": 2
-				},
-				"note": "",
-				"noteVisibility": "default",
-				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/1ddead44-dbf5-4176-9391-88e950d6ef03"
-				}
-			},
-			{
-				"i": "a32eacf5-b9e4-4301-8f8e-46b6526066af",
-				"x": 4,
-				"y": 0,
-				"w": 4,
-				"h": 4,
-				"name": "Water level",
-				"queries": [
-					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\", max(\"value\") AS \"max_value\", min(\"value\") AS \"min_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/level' GROUP BY time(:interval:) FILL(null)",
-						"queryConfig": {
-							"database": "sensors",
-							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
-							"fields": [
-								{
-									"value": "mean",
-									"type": "func",
-									"alias": "mean_value",
-									"args": [
-										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								},
-								{
-									"value": "max",
-									"type": "func",
-									"alias": "max_value",
-									"args": [
-										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								},
-								{
-									"value": "min",
-									"type": "func",
-									"alias": "min_value",
-									"args": [
-										{
-											"value": "value",
+											"value": "mean_value",
 											"type": "field",
 											"alias": ""
 										}
@@ -954,21 +763,21 @@
 				"type": "line",
 				"colors": [
 					{
-						"id": "f6e89d7e-36a2-4038-8304-5793542fb652",
+						"id": "937a318e-6689-445c-9dc0-60049ba2c731",
 						"type": "scale",
 						"hex": "#31C0F6",
 						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "155d012e-48f1-4df3-a94f-cea5f860cf11",
+						"id": "d57eb0f7-02de-440d-a8e0-e69ed64681e2",
 						"type": "scale",
 						"hex": "#A500A5",
 						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "ea46736d-8956-4f23-9045-711616d6f69a",
+						"id": "8d748291-b49c-4989-a054-b9d770f87942",
 						"type": "scale",
 						"hex": "#FF7E27",
 						"name": "Nineteen Eighty Four",
@@ -1001,166 +810,31 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/a32eacf5-b9e4-4301-8f8e-46b6526066af"
+					"self": "/chronograf/v1/dashboards/9/cells/35352821-51e3-4cce-80d4-25ac6ba9a165"
 				}
 			},
 			{
-				"i": "482214e4-623a-46ff-a210-9e5ba2639f9c",
-				"x": 0,
-				"y": 12,
-				"w": 4,
-				"h": 4,
-				"name": "Sprinkler",
-				"queries": [
-					{
-						"query": "SELECT max(\"value\") AS \"max_value\" FROM \"devices\".\"keep_forever\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_control/out/sprinkler1' GROUP BY time(:interval:) FILL(null)",
-						"queryConfig": {
-							"database": "devices",
-							"measurement": "pond_control",
-							"retentionPolicy": "keep_forever",
-							"fields": [
-								{
-									"value": "max",
-									"type": "func",
-									"alias": "max_value",
-									"args": [
-										{
-											"value": "value",
-											"type": "field",
-											"alias": ""
-										}
-									]
-								}
-							],
-							"tags": {
-								"topic": [
-									"pc/water_control/out/sprinkler1"
-								]
-							},
-							"groupBy": {
-								"time": "auto",
-								"tags": []
-							},
-							"areTagsAccepted": true,
-							"fill": "null",
-							"rawText": null,
-							"range": null,
-							"shifts": null
-						},
-						"source": "",
-						"type": "influxql"
-					}
-				],
-				"axes": {
-					"x": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					},
-					"y": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					},
-					"y2": {
-						"bounds": [
-							"",
-							""
-						],
-						"label": "",
-						"prefix": "",
-						"suffix": "",
-						"base": "10",
-						"scale": "linear"
-					}
-				},
-				"type": "line-stepplot",
-				"colors": [
-					{
-						"id": "d727d16e-2c7d-4deb-94e1-e29cb1126fad",
-						"type": "scale",
-						"hex": "#31C0F6",
-						"name": "Nineteen Eighty Four",
-						"value": "0"
-					},
-					{
-						"id": "111b0ddd-3bb4-4bd1-903e-91c75d7cfdef",
-						"type": "scale",
-						"hex": "#A500A5",
-						"name": "Nineteen Eighty Four",
-						"value": "0"
-					},
-					{
-						"id": "17d7c9c0-4d8c-4f53-b34c-e44a3a6a4272",
-						"type": "scale",
-						"hex": "#FF7E27",
-						"name": "Nineteen Eighty Four",
-						"value": "0"
-					}
-				],
-				"legend": {},
-				"tableOptions": {
-					"verticalTimeAxis": true,
-					"sortBy": {
-						"internalName": "time",
-						"displayName": "",
-						"visible": true
-					},
-					"wrapping": "truncate",
-					"fixFirstColumn": true
-				},
-				"fieldOptions": [
-					{
-						"internalName": "time",
-						"displayName": "",
-						"visible": true
-					}
-				],
-				"timeFormat": "MM/DD/YYYY HH:mm:ss",
-				"decimalPlaces": {
-					"isEnforced": true,
-					"digits": 2
-				},
-				"note": "",
-				"noteVisibility": "default",
-				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/482214e4-623a-46ff-a210-9e5ba2639f9c"
-				}
-			},
-			{
-				"i": "b103d6e3-b021-4903-8531-6e2f993c484b",
-				"x": 0,
+				"i": "91e2a5a9-5b4c-4300-808e-f45e522c1979",
+				"x": 8,
 				"y": 8,
 				"w": 4,
 				"h": 4,
-				"name": "EC",
+				"name": "Temperature",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/ec' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/temp' GROUP BY time(:interval:) FILL(null)",
 						"queryConfig": {
-							"database": "sensors",
+							"database": "sensors_downsampled",
 							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
+							"retentionPolicy": "autogen",
 							"fields": [
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "mean_mean_value",
 									"args": [
 										{
-											"value": "value",
+											"value": "mean_value",
 											"type": "field",
 											"alias": ""
 										}
@@ -1169,7 +843,7 @@
 							],
 							"tags": {
 								"topic": [
-									"pc/water_quality/out/ec"
+									"pc/water_quality/out/temp"
 								]
 							},
 							"groupBy": {
@@ -1224,24 +898,24 @@
 				"type": "line",
 				"colors": [
 					{
-						"id": "58ece94b-6917-4028-9212-c709378e7a69",
+						"id": "5f501fa1-cf3c-444f-a404-938442f07426",
 						"type": "scale",
-						"hex": "#8F8AF4",
-						"name": "Do Androids Dream of Electric Sheep?",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "0059262a-6a60-47d4-869e-b8cc6562f94d",
+						"id": "ff81abdf-1fd1-4f94-bcca-d44dd35caf7e",
 						"type": "scale",
-						"hex": "#A51414",
-						"name": "Do Androids Dream of Electric Sheep?",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
 						"value": "0"
 					},
 					{
-						"id": "c12c9af5-1aaf-43dd-93f1-e87cf26f22ce",
+						"id": "f191fdeb-58ea-4610-8759-96a31d0227fd",
 						"type": "scale",
-						"hex": "#F4CF31",
-						"name": "Do Androids Dream of Electric Sheep?",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
 						"value": "0"
 					}
 				],
@@ -1271,31 +945,31 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/b103d6e3-b021-4903-8531-6e2f993c484b"
+					"self": "/chronograf/v1/dashboards/9/cells/91e2a5a9-5b4c-4300-808e-f45e522c1979"
 				}
 			},
 			{
-				"i": "11b068ff-d28c-4783-8647-6b58a980deed",
-				"x": 0,
-				"y": 4,
+				"i": "ffa8117c-4054-493a-b8f9-893971d13963",
+				"x": 4,
+				"y": 0,
 				"w": 4,
 				"h": 4,
 				"name": "PH",
 				"queries": [
 					{
-						"query": "SELECT mean(\"value\") AS \"mean_value\" FROM \"sensors\".\"detailed_3d\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/ph' GROUP BY time(:interval:) FILL(null)",
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/ph' GROUP BY time(:interval:) FILL(null)",
 						"queryConfig": {
-							"database": "sensors",
+							"database": "sensors_downsampled",
 							"measurement": "pond_control",
-							"retentionPolicy": "detailed_3d",
+							"retentionPolicy": "autogen",
 							"fields": [
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_value",
+									"alias": "mean_mean_value",
 									"args": [
 										{
-											"value": "value",
+											"value": "mean_value",
 											"type": "field",
 											"alias": ""
 										}
@@ -1359,21 +1033,21 @@
 				"type": "line",
 				"colors": [
 					{
-						"id": "2b43ab81-da7b-458e-a9ec-081c24d6429e",
+						"id": "694378ec-553c-4d76-8dd5-16c3b613adfe",
 						"type": "scale",
 						"hex": "#DA6FF1",
 						"name": "Ectoplasm",
 						"value": "0"
 					},
 					{
-						"id": "6969d632-bbe6-4b7d-a8bc-f6c24256e173",
+						"id": "371c6b7a-c00b-490b-ae84-336ed4508e9f",
 						"type": "scale",
 						"hex": "#00717A",
 						"name": "Ectoplasm",
 						"value": "0"
 					},
 					{
-						"id": "62069166-fd44-470a-b934-919ef5e872d4",
+						"id": "aaa50a1c-65ae-417d-83af-90bb4e2d86e9",
 						"type": "scale",
 						"hex": "#ACFF76",
 						"name": "Ectoplasm",
@@ -1406,17 +1080,287 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/7/cells/11b068ff-d28c-4783-8647-6b58a980deed"
+					"self": "/chronograf/v1/dashboards/9/cells/ffa8117c-4054-493a-b8f9-893971d13963"
+				}
+			},
+			{
+				"i": "17ed1214-163c-4299-bd15-d283408f5a4a",
+				"x": 4,
+				"y": 8,
+				"w": 4,
+				"h": 4,
+				"name": "Electrical Conductivity",
+				"queries": [
+					{
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/water_quality/out/ec' GROUP BY time(:interval:) FILL(null)",
+						"queryConfig": {
+							"database": "sensors_downsampled",
+							"measurement": "pond_control",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_mean_value",
+									"args": [
+										{
+											"value": "mean_value",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"topic": [
+									"pc/water_quality/out/ec"
+								]
+							},
+							"groupBy": {
+								"time": "auto",
+								"tags": []
+							},
+							"areTagsAccepted": true,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "b74de41b-0b9a-4953-ba47-a9e7f82055d4",
+						"type": "scale",
+						"hex": "#74D495",
+						"name": "Atlantis",
+						"value": "0"
+					},
+					{
+						"id": "2b3dd2ad-020d-4baf-a472-9ebe667e8f6f",
+						"type": "scale",
+						"hex": "#3F3FBA",
+						"name": "Atlantis",
+						"value": "0"
+					},
+					{
+						"id": "45394802-2077-4be0-a490-6b45599e83fa",
+						"type": "scale",
+						"hex": "#FF4D9E",
+						"name": "Atlantis",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/9/cells/17ed1214-163c-4299-bd15-d283408f5a4a"
+				}
+			},
+			{
+				"i": "cf85d79a-2312-45e2-8618-77fd6a6f018a",
+				"x": 8,
+				"y": 0,
+				"w": 4,
+				"h": 4,
+				"name": "Feeding Amount",
+				"queries": [
+					{
+						"query": "SELECT mean(\"mean_value\") AS \"mean_mean_value\" FROM \"sensors_downsampled\".\"autogen\".\"pond_control\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"topic\"='pc/fishfeeder/out/feeding_amount' GROUP BY time(:interval:) FILL(null)",
+						"queryConfig": {
+							"database": "sensors_downsampled",
+							"measurement": "pond_control",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_mean_value",
+									"args": [
+										{
+											"value": "mean_value",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"topic": [
+									"pc/fishfeeder/out/feeding_amount"
+								]
+							},
+							"groupBy": {
+								"time": "auto",
+								"tags": []
+							},
+							"areTagsAccepted": true,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "68414b59-e595-4a3f-b5fd-95b4fbd662e0",
+						"type": "scale",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "bd6f8d39-3079-4316-a49f-785b16e4e8bd",
+						"type": "scale",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "b5250ba5-66b7-47ea-b0da-1585201166d1",
+						"type": "scale",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/9/cells/cf85d79a-2312-45e2-8618-77fd6a6f018a"
 				}
 			}
 		],
 		"templates": [],
-		"name": "Poseidon (Detailed)",
+		"name": "Poseidon (Downsampled)",
 		"organization": "default",
 		"links": {
-			"self": "/chronograf/v1/dashboards/7",
-			"cells": "/chronograf/v1/dashboards/7/cells",
-			"templates": "/chronograf/v1/dashboards/7/templates"
+			"self": "/chronograf/v1/dashboards/9",
+			"cells": "/chronograf/v1/dashboards/9/cells",
+			"templates": "/chronograf/v1/dashboards/9/templates"
 		}
 	}
 }

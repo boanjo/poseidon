@@ -4,7 +4,7 @@ The water control is built from a water level sensor (2 alternatives below) a fe
 
 
 For the water level control i have 2 differnt solutions, where the first one is what i currently use (see alternative 2 at the bottom - most parts are common):
-## KUS liquid level sensor
+## Alternative 1: KUS liquid level sensor
 The sensor has a magnet in the floating piece which controls reed switches inside the steel rod to output different resistance at differnt levels. I'm using European standard sensor where the resistance is between 0-180ohm and it's priced at ~20$. To make the two solutions compatible i've added a resistance to the outer two pins as the fixed reference in a voltage divider (see below). Even if the accuracy for the sensors is 21mm (the step between the reed switches) you can make the level full/low toggle on a +-5mm accuracy due the nature of the reed switches. I.e. when the level goes down the reed switch will continue to be activated for maybe 5mm until the next lower one gets activated. Same goes in the other direction so this means that the accuracy for the range where values toogle between is 10mm or less. So just set min and max between those levels and you are good to go. Of course if you want to use the sensor for detailed monitoring of the level you will not get better than 21mm accuracy and you should probably go for the etape solution.  
 ![0](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_kus.png?raw=true "KUS liquid level sensor")
 
@@ -33,10 +33,18 @@ See stl_step folder models (download and edit STEP or just print STL):
 
 On the RPI there is a serial2mqtt.py application running and as the name indicates it bridges between the serial commands and the mqtt GW.
 
+You need a small proto baord (the Adafruit Perma-Proto 1/2 Sized Breadboard is a great fit) for all the connections and the Arduino nano, schematics here. The RPI needs a standard RPI4 power supply (i've cut mine with a pair of GX12 2 pin connectors to get it into the box). You also need a 12 transformer for the solenoids (cut in the same way but with a 3 pin to not make any misstake). Then there is one 4 pin GX12 connector for the KUS or etape.
+![8](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_schematic.JPG?raw=true "Schematic")
+
+Notice the mounted resistor (needed for the voltage divider) inside the KUS level sensor to make it pin compatible with the etape (Pin 1 & 4 for Rref and middle 2,3 for Rsense i.e. the variable part)
+![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_resistor.JPG?raw=true "Resistor")
+
+Everything is hosted in the same box as the RPI4
+![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_box.JPG?raw=true "Box")
 
 Here is a YouTube video from some of the building step and any programming needed.
 
-## Milone technology etape
+## Alternative 2: Milone technology etape
 The sensor is quite sensitive and this is why i have move to the float switch solution instead. I love the etape due to it's accuracy but it has broken down on me a few time too many (resistance all of a sudden goes off the datasheet range like max 2.2k is all of a sudden 9k etc) and you of course need something robust when dealing with water.
 ![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_etape.JPG?raw=true "Etape")
 
@@ -44,4 +52,5 @@ The sensor is quite sensitive and this is why i have move to the float switch so
 
 See stl_step folder models (download and edit STEP or just print STL):
 ![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_model_etape.PNG?raw=true "Model to mount etape level sensor")
+
 

@@ -6,8 +6,11 @@
 #define DEBUG 1
 int servoPin = D3;
 
-const char *mqtt_server = "192.168.1.9";
-const char *topic = "pc"; // this is the [root topic]
+#error Remove this line once you have updated the IP address below
+const char *mqtt_server = "192.168.1.9"; // @TODO change this to the IP of your MQTT server
+
+
+const char *topic = "pc";                // The mqtt root topic
 String pubTopic;
 
 long timeBetweenMessages = 1000 * 5 * 1;

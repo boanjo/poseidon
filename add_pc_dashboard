@@ -1,9 +1,0 @@
-#!/bin/bash
-while true; do
-    read -p "Do You want to add the PondControl dashboard (y/n)? If you repeat this you will add the same several times " yn
-    case $yn in
-        [Yy]* ) curl -i -X POST -H "Content-Type: application/json" http://localhost:8888/chronograf/v1/dashboards -d @pc_dashboard.json; break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
