@@ -9,7 +9,7 @@ If you don't want to go all in (these sensors + carrier boards cost in the range
 On the RPI there is a serial2mqtt.py application running and as the name indicates it bridges between the serial commands and the mqtt GW.
 
 The Arduino UNO firmware continously collects all the sensor values every 3 seconds and the data is continously pushed to the DB via the MQTT GW, see dashed route red:
-![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_quality.png?raw=true "Sensor route")
+![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_quality_route.png?raw=true "Sensor route")
 
 You can monitor the sensor values eiter in the web_gui which shows the sensor values in real time but also with min and max range on the right side. You can also follow longer trends in either Grafana or Chronograf. This is from my default dashboards you can also import from the poseidon root dir.
 ![2](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_sensor_details.png?raw=true "Sensor Details")
