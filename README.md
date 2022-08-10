@@ -24,11 +24,12 @@ The services are started using docker composer so you can update the docker-comp
 * First you need to decide if you want to have all the parts and sensors. All services should be ok with that no values at all are bing pushed but there might be hardcoded assumptions (like in the web app) that you at some point will get ORP and PH etc.
 * If you are building sensors like the water_control or simply the fishfeeder now is the time to do so and to program it's firmware (see each README for details). The fishfeeder hooks up over wifi and the water_quality and water_control with Arduino UNO and Nano. One reason for selecting different Arduinos is to get determensitic names at boot (i.e. so the don't get mixed) due to race conditions. This could have been solved in other ways but it's a good bonus worth knowing about.
 * Now you can build and start your services (you need to install docker and docker-compose on the RPI, use something like: https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo):
+`
   docker-compose build   ( build all services based on the yml file)
   docker-compose -d up   (Here you start all the services in the docker-compose.yml file daemonized so even if you exit your shell they will continue to live and start on boot)
   docker ps              (check all the services up and runnig)
   docker-compose logs -f (Follow the logging from all the services)
-  
+` 
 
 ## More details
 I have 2 dashboards setup for Chronograf (one detailed/all data for the last 3 days and one downsampled for the last moth). It's quite easy to add your own graphs based on the influxdb data, but if you want to reuse them you can:
