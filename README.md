@@ -25,4 +25,12 @@ I have 2 dashboards setup for Chronograf (one detailed/all data for the last 3 d
 * Download the json files from the repo and drag and drop them in Chronograf under "Dashboards->Import Dashboards".
 * Headless from your RPI you can install curl and then import one json a t a time with:
 ** curl -i -X POST -H "Content-Type: application/json" http://localhost:8888/chronograf/v1/dashboards -d pc_dashboard.json
-** curl -i -X POST -H "Content-Type: application/json" http://localhost:8888/chronograf/v1/dashboards -d pc_dashboard_downsampled.json  
+** curl -i -X POST -H "Content-Type: application/json" http://localhost:8888/chronograf/v1/dashboards -d pc_dashboard_downsampled.json
+
+Here is what you can get from the detailed dashboard (retention period 3 days):
+![3](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_sensor_details.png?raw=true "Dashboard")
+
+
+
+Here is what you can get from the resource (Click in Chronograf in the left column "Host List"):
+![4](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_host_resources.png?raw=true "Host resource usage")

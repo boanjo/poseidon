@@ -36,7 +36,7 @@ On the RPI there is a serial2mqtt.py application running and as the name indicat
 You need a small proto baord (the Adafruit Perma-Proto 1/2 Sized Breadboard is a great fit) for all the connections and the Arduino nano, schematics here. The RPI needs a standard RPI4 power supply (i've cut mine with a pair of GX12 2 pin connectors to get it into the box). You also need a 12 transformer for the solenoids (cut in the same way but with a 3 pin to not make any misstake). Then there is one 4 pin GX12 connector for the KUS or etape.
 ![8](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_schematic.JPG?raw=true "Schematic")
 
-Notice the mounted resistor (needed for the voltage divider) inside the KUS level sensor to make it pin compatible with the etape (Pin 1 & 4 for Rref and middle 2,3 for Rsense i.e. the variable part)
+Notice the mounted resistor of 100ohm (needed for the voltage divider) inside the KUS level sensor to make it pin compatible with the etape (Pin 1 & 4 for Rref and middle 2,3 for Rsense i.e. the variable part)
 ![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_resistor.JPG?raw=true "Resistor")
 
 Everything is hosted in the same box as the RPI4
