@@ -12,4 +12,4 @@ To open the dashboard just navigate to the ipaddress and the port you choose to 
 As the button says "Timers" i guess it's no surprise that here you can modify the timers/alarms for feeding the fishes, starting sprinklers etc.
 ![2](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_web_app_timers.JPG?raw=true "Timers")
 
-
+Feel free to update the web app to your liking. I wanted it clean so there are not so much visual bells and whistles. See it as a boilerplate that does the job.
