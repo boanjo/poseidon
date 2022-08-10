@@ -1,15 +1,15 @@
-# MySkyEye Web App
-To give a good overview of the current status of my survillance system i have create a web application. At first i created a web app in Erlang / Nitrogen which is wonderful in the way you can manage the webserver with zero downtime. However i wanted to bundle this complete application using containers and then the overhead became a bit too big for my taste. So i decided to go for python and Flask which is nice and simple and enough for this kind of application. If anyone is interested in the Erlang solution give me a message and i'll upload it somewhere. 
+# Poseidon Web App
 
-![1](https://github.com/epkboan/epkboan.github.io/blob/master/myskyeye_dashboard.JPG?raw=true "Dashboard")
+The web app is built upon python flask that is running on the RPI4. This is more than enough for a low number of users (i assume you don't expose your pond control for thousands of users ;-). Otherwise flask should be fronted with a proper WSGI webserver like nginx.
 
-There is a highcharts graph showing all the objects that have been detected during motion (more than 5 frames during 10sec). Tensorflow often detects object that are not really there but i don't filter them out as it's fun to observe all the faulty predictions and try to figure out why there was firepost or a surfboard right outside my door :-). You can go back in time and show the motion per day and also select just persons or animals etc. Click on the items to replay the movie!
+The web app uses both the influxdb and mqtt to gather the data presented in the GUI. While active it listens to new sensor values (i.e. real time) but also shows the min and max values today for all sensors. 
 
-The next part is live mjpeg feeds from the cameras (One for the real time motion with annotations) and one with plain video. NOTE! these streams are using MJPG (To be able to view the page in any type of browser or device) and will quickly use more bandwidth if displayed continously.
+If you press the Debug button in the right top corner you will be adding all the raw MQTT messages that are coming on the bus. Press it once more to toggle off or your web gui will be sluggish as it just appends divs to the page. The chronograf dashboards can be reached via the top left button
 
-The last part of the page is showing the last 16 (configure it to your needs) MUG shots ("Best" image with max persons in the picture). Click to replay the movie.
+To open the dashboard just navigate to the ipaddress and the port you choose to expose in the docker-compose.yml (under web_app ports).  i.e. http://localhost:8080
+![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_web_app_dashboard.JPG?raw=true "Dashboard")
 
-## Building
-Edit the env.list (common for all the apps) and update any specific URL:s, ports etc in the docker.txt. Then do "source docker.txt" or run the commands manually
+As the button says "Timers" i guess it's no surprise that here you can modify the timers/alarms for feeding the fishes, starting sprinklers etc.
+![2](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_web_app_timers.JPG?raw=true "Timers")
 
-Navigate to the ipaddress and the port you choose to expose /dashboard. (in the docker.txt sample 8997) i.e. http://localhost:8997/dashboard
+
