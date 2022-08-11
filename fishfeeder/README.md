@@ -15,10 +15,10 @@ Here are the parts for the feeder:
 
 
 Basic operation is like a pellets screw. The screw has a loose fit in the cylinder to reduce the fricton and there is no problem for the DC servo to rotate, pulling KOI pellets from the PVC tube.
-![4](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeer_assembly.PNG?raw=true "Basic operation")
+![4](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeder_assembly.PNG?raw=true "Basic operation")
 
 The full unit except the PVC tube:
-![5](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeer_assembly_2.PNG?raw=true "Feeder kit")
+![5](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeder_assembly_2.PNG?raw=true "Feeder kit")
 
 
 I didn't rough the surface enough the first time, but now it's good. Ideally add some PVD primer or other coler with specialized adhesion.
