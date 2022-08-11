@@ -32,7 +32,7 @@ See stl_step folder models (download and edit STEP or just print STL):
 ![8](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeder_closeup.PNG?raw=true "Closeup")
 
 
-Here is a YouTube video from some of the building step and any programming needed.
+@TODO link will come soon: Here is a YouTube video from some of the building step and any programming needed.
 
 The firmware that you need to upload to the Wemos D1 mini can be done from the same RPI using a micro USB cable (unless you want to install platformio gui or cli on your laptop/desktop). The source code is quite simple and mainly default sketch for connecting to your Wifi, connect to a MQTT server and then to just listen on incoming feeding requests where the DC servo is stepped accordingly. It also reports back when ready or listen to ack requests. In order to get a specific amount in milliliter or such then just tune that with your specific fishfood (as that might differ with different pellets) to see how many steps that match. With a fishfeeder you have the luxury of feeding less but more frequently :-). 9 steps on the DC servo is the equivalent of one tablespoon i.e. 15ml so rougly 1.5ml per step. The default value in the web_app when feeding interactively is only 3 (change if you want to (in the web_app/app.py)) so one teaspoon 5ml.
 * Change the WIFI settings for your router in Credentials.h or you will get a compilation error (just remove the #error when done)

@@ -42,7 +42,7 @@ Notice the mounted resistor of 100ohm (needed for the voltage divider) inside th
 Everything is hosted in the same box as the RPI4
 ![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_box.JPG?raw=true "Box")
 
-Here is a YouTube video from some of the building step and any programming needed.
+@TODO link will come soon: Here is a YouTube video from some of the building step and any programming needed.
 
 ## Alternative 2: Milone technology etape
 The sensor is quite sensitive and this is why i have move to the float switch solution instead. I love the etape due to it's accuracy but it has broken down on me a few time too many (resistance all of a sudden goes off the datasheet range like max 2.2k is all of a sudden 9k etc) and you of course need something robust when dealing with water.
