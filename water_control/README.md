@@ -42,7 +42,10 @@ Notice the mounted resistor of 100ohm (needed for the voltage divider) inside th
 Everything is hosted in the same box as the RPI4
 ![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_box.JPG?raw=true "Box")
 
-@TODO link will come soon: Here is a YouTube video from some of the building step and any programming needed.
+Here is a video covering the Water Control with coding and usage: https://youtu.be/l2im_r2Qxn0
+
+Here is a YouTube video explaining the KUS liquid level setup: https://youtu.be/7Df8thEyxGE
+Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa
 
 ## Alternative 2: Milone technology etape
 The sensor is quite sensitive and this is why i have move to the float switch solution instead. I love the etape due to it's accuracy but it has broken down on me a few time too many (resistance all of a sudden goes off the datasheet range like max 2.2k is all of a sudden 9k etc) and you of course need something robust when dealing with water.
@@ -52,5 +55,7 @@ The sensor is quite sensitive and this is why i have move to the float switch so
 
 See stl_step folder models (download and edit STEP or just print STL):
 ![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_model_etape.PNG?raw=true "Model to mount etape level sensor")
+
+Here is a YouTube video explaining the etape liquid level setup: https://youtu.be/HrQJPjmJSWM
 
 

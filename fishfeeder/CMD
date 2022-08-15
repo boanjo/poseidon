@@ -1,0 +1,9 @@
+echo "*****************************************************************"
+echo "NOTE if you already have the water_quality Arduino plugged into  "
+echo "your RPI you will most likely get /dev/ttyACM1 instead of 0      "
+echo "*****************************************************************"
+
+pio run -t clean
+pio run
+pio run -t upload --upload-port /dev/ttyACM1 
+pio device monitor -p /dev/ttyACM1

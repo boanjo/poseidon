@@ -30,4 +30,5 @@ The mounting is tailored for my Sieve filter and works really well. Some of the 
 ![6](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_model_atlas_sensors.PNG?raw=true "Atlas sensors mounting model")
 ![7](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_quality_mounting_live_2.PNG?raw=true "Sieve filter")
 
-@TODO link will come soon: Here is a YouTube video from some of the building step and any programming needed.
+Here is a YouTube video explaining the sensors, 3D models and code for the water quality setup: https://youtu.be/wYSqa4tR1fA 
+Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa

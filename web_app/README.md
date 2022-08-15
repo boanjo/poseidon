@@ -13,3 +13,7 @@ As the button says "Timers" i guess it's no surprise that here you can modify th
 ![2](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_web_app_timers.JPG?raw=true "Timers")
 
 Feel free to update the web app to your liking. I wanted it clean so there are not so much visual bells and whistles. See it as a boilerplate that does the job.
+
+Here is a YouTube video giving an overview of the code for the web_app: https://youtu.be/K_MTeVfbo9E
+Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa
+

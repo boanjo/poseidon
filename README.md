@@ -33,6 +33,7 @@ The services are started using docker composer so you can update the docker-comp
 </code></pre>
 
 Here is a YouTube video explaining the Poseidon setup: https://youtu.be/6Q65v6jY_po
+Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa
 
 ## More details
 I have 2 dashboards setup for Chronograf (one detailed/all data for the last 3 days and one downsampled for the last moth). It's quite easy to add your own graphs based on the influxdb data, but if you want to reuse them you can:
