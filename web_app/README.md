@@ -18,4 +18,4 @@ Here is a YouTube video giving an overview of the code for the web_app: https://
 Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa
 
 
-Poseidon - Pond Control 2.0 by Anders Johansson is marked with CC0 1.0. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0
+Poseidon is licensed under GNU General Public License v3.0 or later

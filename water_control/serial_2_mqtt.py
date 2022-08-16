@@ -1,3 +1,7 @@
+########################################################################################
+# Poseidon is licensed under GNU General Public License v3.0 or later
+########################################################################################
+
 import serial
 import time
 import queue

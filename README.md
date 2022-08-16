@@ -51,4 +51,4 @@ Here is what you can get from the resource (Click in Chronograf in the left colu
 ![4](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_host_resources.png?raw=true "Host resource usage")
 
 
-Poseidon - Pond Control 2.0 by Anders Johansson is marked with CC0 1.0. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0
+Poseidon is licensed under GNU General Public License v3.0 or later
