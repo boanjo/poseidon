@@ -32,3 +32,6 @@ The mounting is tailored for my Sieve filter and works really well. Some of the 
 
 Here is a YouTube video explaining the sensors, 3D models and code for the water quality setup: https://youtu.be/wYSqa4tR1fA 
 Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa
+
+
+Poseidon - Pond Control 2.0 by Anders Johansson is marked with CC0 1.0. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0

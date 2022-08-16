@@ -59,3 +59,4 @@ See stl_step folder models (download and edit STEP or just print STL):
 Here is a YouTube video explaining the etape liquid level setup: https://youtu.be/HrQJPjmJSWM
 
 
+Poseidon - Pond Control 2.0 by Anders Johansson is marked with CC0 1.0. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0

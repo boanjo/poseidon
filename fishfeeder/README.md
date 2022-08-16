@@ -41,3 +41,5 @@ The firmware that you need to upload to the Wemos D1 mini can be done from the s
 You don't need any board and very little soldering. Basically the 3 wires on the wemos, see schematic. The rest is mounted on the printed mounting and a 2 pol terminal connector
 ![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeder_schematic.JPG?raw=true "Schematic")
 ![10](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_fishfeeder_motor.JPG?raw=true "Mounting")
+
+Poseidon - Pond Control 2.0 by Anders Johansson is marked with CC0 1.0. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0

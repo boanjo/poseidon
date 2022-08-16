@@ -49,3 +49,6 @@ Here is what you can get from the detailed dashboard (retention period 3 days):
 
 Here is what you can get from the resource (Click in Chronograf in the left column "Host List"):
 ![4](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_host_resources.png?raw=true "Host resource usage")
+
+
+Poseidon - Pond Control 2.0 by Anders Johansson is marked with CC0 1.0. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0
