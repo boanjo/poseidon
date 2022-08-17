@@ -42,7 +42,7 @@ Notice the mounted resistor of 100ohm (needed for the voltage divider) inside th
 Everything is hosted in the same box as the RPI4
 ![9](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_water_control_box.JPG?raw=true "Box")
 
-Here is a video covering the Water Control with coding and usage: https://youtu.be/l2im_r2Qxn0
+Here is a video covering the Water Control with coding and usage: https://youtu.be/Q5HgJ9Mg1no
 
 Here is a YouTube video explaining the KUS liquid level setup: https://youtu.be/7Df8thEyxGE
 Here is the full Poseidon playlist: https://www.youtube.com/watch?v=6Q65v6jY_po&list=PL4uTTzIGocpXYQ4JUedOa0raxNH4VkoVa
@@ -56,7 +56,7 @@ The sensor is quite sensitive and this is why i have move to the float switch so
 See stl_step folder models (download and edit STEP or just print STL):
 ![1](https://github.com/boanjo/boanjo.github.io/blob/master/poseidon_model_etape.PNG?raw=true "Model to mount etape level sensor")
 
-Here is a YouTube video explaining the etape liquid level setup: https://youtu.be/HrQJPjmJSWM
+Here is a YouTube video explaining the etape liquid level setup: https://youtu.be/k4SEj0wbtEo
 
 
 Poseidon is licensed under GNU General Public License v3.0 or later
