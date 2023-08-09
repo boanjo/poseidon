@@ -285,9 +285,9 @@ void loop()
     payload += rssi;
     payload += ",\"cnt_reconnect\":";
     payload += cntReconnectAttempt;
-    payload += ",\"client\":";
+    payload += ",\"client\":\"";
     payload += clientId;
-    payload += "}";
+    payload += "\"}";
 
 #ifdef DEBUG
     Serial.print("Publish message: ");
